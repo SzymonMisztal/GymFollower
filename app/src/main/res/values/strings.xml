@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">GymFollower</string>
+
+    <string name="bottom_bar_main">Main</string>
+    <string name="bottom_bar_progress">Progress</string>
+    <string name="bottom_bar_settings">Settings</string>
+    <string name="bottom_bar_main_description">Main screen</string>
+    <string name="bottom_bar_progress_description">Progress screen</string>
+    <string name="bottom_bar_settings_description">Settings screen</string>
+
 </resources>

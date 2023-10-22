@@ -1,0 +1,83 @@
+package com.technosudo.gymfollower.ui.navigation
+
+import android.util.Log
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.Image
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation.NavGraph
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun BottomNavigationBar(
+    navController: NavHostController,
+) {
+    val bottomNavItems = listOf(
+        Screen.Main,
+        Screen.Progress,
+        Screen.Settings,
+    )
+
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentDestination = navBackStackEntry?.destination
+
+    Log.d("route", currentDestination?.route ?: "no route")
+
+    Scaffold(
+        bottomBar = {
+            AnimatedVisibility(
+                visible = true,
+                enter = slideInVertically(initialOffsetY = { s -> s } ),
+                exit = slideOutVertically(targetOffsetY = { t -> t } )
+            ) {
+                NavigationBar {
+                    bottomNavItems.forEach { screen ->
+                        NavigationBarItem(
+                            modifier = Modifier.testTag(screen.tag),
+                            icon = {
+                                if (screen.icon != null && screen.description != null)
+                                    Image(
+                                        painter = painterResource(id = screen.icon),
+                                        contentDescription = stringResource(id = screen.description),
+                                        colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.onBackground)
+                                    )
+                            },
+                            label = {
+                                screen.label?.let {
+                                    Text(
+                                        text = stringResource(id = it),
+                                        style = MaterialTheme.typography.bodySmall,
+                                        color = MaterialTheme.colorScheme.onBackground
+                                    )
+                                }
+                            },
+                            alwaysShowLabel = true,
+                            selected = currentDestination?.hierarchy?.any { it.route == screen.path } == true,
+                            onClick = {
+                                navController.navigate(screen.path) { launchSingleTop = true }
+                            }
+                        )
+                    }
+                }
+            }
+        }
+    ) { innerPadding ->
+        NavGraph(navController = navController, innerPadding = innerPadding)
+    }
+}
