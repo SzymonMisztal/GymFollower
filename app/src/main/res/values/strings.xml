@@ -1,5 +1,10 @@
 <resources>
     <string name="app_name">GymFollower</string>
+    <string name="nothing"></string>
+    <string name="confirm">Confirm</string>
+    <string name="cancel">Cancel</string>
+
+    <string name="image_content_description">Image</string>
 
     <string name="bottom_bar_main">Main</string>
     <string name="bottom_bar_progress">Progress</string>
@@ -7,5 +12,10 @@
     <string name="bottom_bar_main_description">Main screen</string>
     <string name="bottom_bar_progress_description">Progress screen</string>
     <string name="bottom_bar_settings_description">Settings screen</string>
+
+    <string name="input_field_error">This field cannot be empty</string>
+
+    <string name="main_menu_1">Edit</string>
+    <string name="main_dialog">Change name</string>
 
 </resources>
