@@ -29,6 +29,10 @@ object  Dimensions {
         get() = 16.dp
     val topBarHeight: Dp
         get() = 45.dp
+    val graphXLabelsSpacing: Dp
+        get() = 45.dp
+    val graphYLabelsSpacing: Dp
+        get() = 45.dp
 }
 
 @Composable

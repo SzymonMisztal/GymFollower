@@ -19,7 +19,7 @@ fun NavGraph(
 ) {
     NavHost(
         navController = navController,
-        startDestination = Screen.Main.path,
+        startDestination = Screen.Progress.path,
         modifier = Modifier.padding(innerPadding)
     ) {
         composable(Screen.Main.path) {

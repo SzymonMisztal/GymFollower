@@ -1,9 +1,9 @@
 package com.technosudo.gymfollower.data
 
-import androidx.annotation.DrawableRes
-
 data class ExerciseData(
+    val id: Int,
     val name: String,
     val weight: Int,
-    val icon: Int
+    val icon: Int,
+    val position: Int
 )

@@ -16,25 +16,33 @@ class MainViewModel : ViewModel() {
     init {
         _uiState.update {
             it.copy(exercises = sortedMapOf(
-                    1 to ExerciseData(
+                    0 to ExerciseData(
+                        id = 0,
                         name = "Deadlift",
                         weight = 800,
-                        icon = R.drawable.ic_exercise
+                        icon = R.drawable.ic_exercise,
+                        0
                     ),
-                    2 to ExerciseData(
+                    1 to ExerciseData(
+                        id = 1,
                         name = "Squad",
                         weight = 80,
-                        icon = R.drawable.ic_exercise
+                        icon = R.drawable.ic_exercise,
+                        position = 1
                     ),
-                    3 to ExerciseData(
+                    2 to ExerciseData(
+                        id = 2,
                         name = "Leg press",
                         weight = 160,
-                        icon = R.drawable.ic_exercise
+                        icon = R.drawable.ic_exercise,
+                        position = 2
                     ),
-                    4 to ExerciseData(
+                    3 to ExerciseData(
+                        id = 3,
                         name = "Bench press",
                         weight = 100,
-                        icon = R.drawable.ic_exercise
+                        icon = R.drawable.ic_exercise,
+                        position = 3
                     ),
                 ),
                 menuOptions = listOf(
