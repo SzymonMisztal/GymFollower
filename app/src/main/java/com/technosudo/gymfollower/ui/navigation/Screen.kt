@@ -35,4 +35,6 @@ sealed class Screen(
         tag = "settings"
     )
 
+    object IndividualProgress : Screen(path = "individualProgress")
+
 }

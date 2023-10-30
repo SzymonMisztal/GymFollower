@@ -21,17 +21,21 @@ object  Dimensions {
         get() = 22.dp
     val divider: Dp
         get() = 1.dp
-    val exerciseListPadding: Dp
+    val listPadding: Dp
         get() = 30.dp
     val exerciseCardHeight: Dp
         get() = 75.dp
     val exerciseClip: Dp
         get() = 16.dp
+    val graphCardHeight: Dp
+        get() = 150.dp
     val topBarHeight: Dp
         get() = 45.dp
     val graphXLabelsSpacing: Dp
         get() = 45.dp
     val graphYLabelsSpacing: Dp
+        get() = 45.dp
+    val border: Dp
         get() = 45.dp
 }
 

@@ -8,6 +8,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.technosudo.gymfollower.ui.screens.invidualprogress.IndividualProgressScreen
 import com.technosudo.gymfollower.ui.screens.main.MainScreen
 import com.technosudo.gymfollower.ui.screens.progress.ProgressScreen
 import com.technosudo.gymfollower.ui.screens.settings.SettingsScreen
@@ -19,7 +20,7 @@ fun NavGraph(
 ) {
     NavHost(
         navController = navController,
-        startDestination = Screen.Progress.path,
+        startDestination = Screen.IndividualProgress.path,
         modifier = Modifier.padding(innerPadding)
     ) {
         composable(Screen.Main.path) {
@@ -30,6 +31,9 @@ fun NavGraph(
         }
         composable(Screen.Settings.path) {
             SettingsScreen()
+        }
+        composable(Screen.IndividualProgress.path) {
+            IndividualProgressScreen()
         }
     }
 }

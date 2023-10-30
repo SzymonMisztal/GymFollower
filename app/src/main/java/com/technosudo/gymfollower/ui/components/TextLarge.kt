@@ -5,25 +5,28 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 
 @Composable
 fun TextLarge(
     modifier: Modifier = Modifier,
-    text: String
+    text: String,
+    color: Color? = null
 ) {
     Text(
         modifier = modifier,
         text = text,
         style = MaterialTheme.typography.titleLarge,
-        color = MaterialTheme.colorScheme.onBackground,
+        color = color ?: MaterialTheme.colorScheme.onBackground,
     )
 }
 
 @Composable
 fun TextLarge(
     modifier: Modifier = Modifier,
-    @StringRes text: Int
+    @StringRes text: Int,
+    color: Color? = null
 ) {
     TextLarge(
         modifier = modifier,

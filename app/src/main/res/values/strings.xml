@@ -18,4 +18,17 @@
     <string name="main_menu_1">Edit</string>
     <string name="main_dialog">Change name</string>
 
+    <string name="chip_days">Days</string>
+    <string name="chip_weeks">Weeks</string>
+    <string name="chip_months">Months</string>
+    <string name="chip_years">Years</string>
+
+    <string name="stat_weakly">Weakly increase</string>
+    <string name="stat_monthly">Weakly increase</string>
+    <string name="stat_yearly">Weakly increase</string>
+    <string name="stat_all">Weakly increase</string>
+    <string name="stat_started">Started from</string>
+    <string name="stat_ended">Ended at</string>
+    <string name="stat_pick">Pick</string>
+
 </resources>
