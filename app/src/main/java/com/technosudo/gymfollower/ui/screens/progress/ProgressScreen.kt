@@ -55,7 +55,7 @@ private fun ProgressScreenContent(
 
         LazyColumn(
             modifier = Modifier
-                .padding(Dimensions.space10)
+                .padding(horizontal = Dimensions.space10)
         ) {
             items(listOf(1, 2, 3, 4)) {
                 GraphCard(

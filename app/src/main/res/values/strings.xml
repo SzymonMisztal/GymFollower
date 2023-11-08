@@ -3,6 +3,8 @@
     <string name="nothing"></string>
     <string name="confirm">Confirm</string>
     <string name="cancel">Cancel</string>
+    <string name="left">&lt;</string>
+    <string name="right">&gt;</string>
 
     <string name="image_content_description">Image</string>
 

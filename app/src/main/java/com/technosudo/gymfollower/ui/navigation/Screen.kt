@@ -35,6 +35,6 @@ sealed class Screen(
         tag = "settings"
     )
 
-    object IndividualProgress : Screen(path = "individualProgress")
+    object IndividualProgress : Screen(path = "individualProgress/{id}")
 
 }

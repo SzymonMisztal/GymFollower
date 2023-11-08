@@ -1,7 +1,9 @@
 package com.technosudo.gymfollower.ui.screens.main
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -98,7 +100,10 @@ private fun MainScreenContent(
                     }
                 } else {
                     items(uiState.exercises.values.toList()) {
-                        ExerciseCard(exerciseData = it)
+                        ExerciseCard(
+                            exerciseData = it,
+                            onHold = { uiInteraction.setEditMode() }
+                        )
                         Dimensions.space10.HeightSpacer()
                     }
                 }
@@ -164,8 +169,12 @@ fun NameInputField(uiState: MainUiState, uiInteraction: MainUiInteraction) {
 }
 
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun ExerciseCard(exerciseData: ExerciseData) {
+private fun ExerciseCard(
+    exerciseData: ExerciseData,
+    onHold: () -> Unit = {}
+) {
 
     Card(
         modifier = Modifier
@@ -173,6 +182,10 @@ private fun ExerciseCard(exerciseData: ExerciseData) {
             .height(Dimensions.exerciseCardHeight)
             .clip(shape = RoundedCornerShape(Dimensions.exerciseClip))
             .background(Color.DarkGray)
+            .combinedClickable(
+                onClick = {},
+                onLongClick = onHold
+            )
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically
@@ -306,9 +319,4 @@ private fun NumberBox(num: Int) {
             color = MaterialTheme.colorScheme.onBackground
         )
     }
-}
-
-@Composable
-fun ExerciseName(text: String) {
-
 }

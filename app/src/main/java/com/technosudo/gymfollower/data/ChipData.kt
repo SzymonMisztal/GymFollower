@@ -8,10 +8,3 @@ data class ChipData(
     val isSelected: Boolean = false,
     val onClick: () -> Unit = {}
 )
-
-enum class Period {
-    Days,
-    Weeks,
-    Months,
-    Years
-}
