@@ -9,6 +9,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemColors
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -19,7 +20,6 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavDestination.Companion.hierarchy
-import androidx.navigation.NavGraph
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 
@@ -69,6 +69,13 @@ fun BottomNavigationBar(
                             },
                             alwaysShowLabel = true,
                             selected = currentDestination?.hierarchy?.any { it.route == screen.path } == true,
+                            colors = NavigationBarItemColors(
+                                selectedIconColor = MaterialTheme.colorScheme.onBackground,
+                                selectedTextColor = MaterialTheme.colorScheme.onBackground,
+                                selectedIndicatorColor = MaterialTheme.colorScheme.secondary,
+                                unselectedIconColor = MaterialTheme.colorScheme.onBackground,
+                                unselectedTextColor = MaterialTheme.colorScheme.onBackground
+                            ),
                             onClick = {
                                 navController.navigate(screen.path) { launchSingleTop = true }
                             }

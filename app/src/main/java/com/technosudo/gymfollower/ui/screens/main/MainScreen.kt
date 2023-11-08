@@ -41,7 +41,9 @@ import com.technosudo.gymfollower.ui.components.TextLarge
 import com.technosudo.gymfollower.ui.components.TopBar
 import com.technosudo.gymfollower.ui.components.VerticalDivider
 import com.technosudo.gymfollower.ui.theme.Dimensions
+import com.technosudo.gymfollower.ui.theme.GreenNormal
 import com.technosudo.gymfollower.ui.theme.HeightSpacer
+import com.technosudo.gymfollower.ui.theme.RedNormal
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -82,8 +84,6 @@ private fun MainScreenContent(
     ) {
         Column {
 
-            TopBar(menuOption = uiState.menuOptions) {}
-
             LazyColumn(
                 modifier = Modifier
                     .padding(Dimensions.space10)
@@ -122,7 +122,7 @@ private fun MainScreenContent(
                 IconButton(
                     modifier = Modifier
                         .clip(shape = RoundedCornerShape(50))
-                        .background(Color.Red),
+                        .background(RedNormal),
                     onClick = { uiInteraction.setNormalMode() }
                 ) {
                     Image(
@@ -139,7 +139,7 @@ private fun MainScreenContent(
                 IconButton(
                     modifier = Modifier
                         .clip(shape = RoundedCornerShape(50))
-                        .background(Color.Green),
+                        .background(GreenNormal),
                     onClick = {
                         uiInteraction.updateExercises()
                     }
@@ -181,13 +181,14 @@ private fun ExerciseCard(
             .fillMaxWidth()
             .height(Dimensions.exerciseCardHeight)
             .clip(shape = RoundedCornerShape(Dimensions.exerciseClip))
-            .background(Color.DarkGray)
             .combinedClickable(
                 onClick = {},
                 onLongClick = onHold
             )
     ) {
         Row(
+            modifier = Modifier
+                .background(MaterialTheme.colorScheme.primary),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Image(
@@ -229,9 +230,10 @@ private fun ExerciseCardEdit(
             .fillMaxWidth()
             .height(Dimensions.exerciseCardHeight)
             .clip(shape = RoundedCornerShape(Dimensions.exerciseClip))
-            .background(Color.DarkGray)
     ) {
         Row(
+            modifier = Modifier
+                .background(MaterialTheme.colorScheme.primary),
             verticalAlignment = Alignment.CenterVertically
         ) {
             IconButton(onClick = { /*TODO*/ }) {

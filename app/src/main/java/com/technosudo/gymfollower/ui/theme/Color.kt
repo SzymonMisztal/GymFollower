@@ -23,5 +23,3 @@ val RedDark = Color(0xFFa30000)
 val YellowNormal = Color(0xFFfdda0d)
 val YellowLight = Color(0xFFffff56)
 val YellowDark = Color(0xFFc5a900)
-
-//val Red

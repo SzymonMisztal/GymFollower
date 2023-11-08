@@ -10,6 +10,10 @@ import java.time.LocalDate
 
 interface ProgressRepository {
     fun insertProgress(progress: Progress): Flow<Boolean>
+    fun insertProgresses(progresses: List<Progress>): Flow<Boolean>
+
+    fun upsertProgress(progress: Progress): Flow<Boolean>
+    fun upsertProgresses(progresses: List<Progress>): Flow<Boolean>
 
     fun updateProgress(progress: Progress): Flow<Boolean>
 

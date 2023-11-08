@@ -8,6 +8,7 @@ import com.technosudo.gymfollower.domain.repository.ProgressRepositoryImpl
 import com.technosudo.gymfollower.ui.screens.invidualprogress.IndividualProgressViewModel
 import com.technosudo.gymfollower.ui.screens.main.MainViewModel
 import com.technosudo.gymfollower.ui.screens.progress.ProgressViewModel
+import com.technosudo.gymfollower.ui.screens.settings.SettingsViewModel
 import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -37,6 +38,7 @@ object AppKoin {
         viewModelOf(::MainViewModel)
         viewModelOf(::ProgressViewModel)
         viewModelOf(::IndividualProgressViewModel)
+        viewModelOf(::SettingsViewModel)
     }
 
     private val modules by lazy {

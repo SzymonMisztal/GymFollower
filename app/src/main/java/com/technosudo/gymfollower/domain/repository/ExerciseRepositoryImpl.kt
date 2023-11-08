@@ -23,6 +23,33 @@ class ExerciseRepositoryImpl(
             emit(false)
         }
 
+    override fun insertExercises(exercises: List<Exercise>): Flow<Boolean> = flow {
+        exerciseDao.insertExercises(exercises)
+        emit(true)
+    }.flowOn(Dispatchers.IO)
+        .catch {
+            Log.d(TAG, it.message ?: "")
+            emit(false)
+        }
+
+    override fun upsertExercise(exercise: Exercise): Flow<Boolean> = flow {
+        exerciseDao.upsertExercise(exercise)
+        emit(true)
+    }.flowOn(Dispatchers.IO)
+        .catch {
+            Log.d(TAG, it.message ?: "")
+            emit(false)
+        }
+
+    override fun upsertExercises(exercises: List<Exercise>): Flow<Boolean> = flow {
+        exerciseDao.upsertExercises(exercises)
+        emit(true)
+    }.flowOn(Dispatchers.IO)
+        .catch {
+            Log.d(TAG, it.message ?: "")
+            emit(false)
+        }
+
     override fun updateExercise(exercise: Exercise): Flow<Boolean> = flow {
         exerciseDao.updateExercise(exercise)
         emit(true)

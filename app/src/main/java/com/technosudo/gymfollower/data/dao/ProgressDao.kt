@@ -4,6 +4,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
+import androidx.room.Upsert
 import com.technosudo.gymfollower.domain.entity.Progress
 import kotlinx.coroutines.flow.Flow
 
@@ -11,6 +12,13 @@ import kotlinx.coroutines.flow.Flow
 interface ProgressDao {
     @Insert
     fun insertProgress(progress: Progress)
+    @Insert
+    fun insertProgresses(progresses: List<Progress>)
+
+    @Upsert
+    fun upsertProgress(progress: Progress)
+    @Upsert
+    fun upsertProgresses(progresses: List<Progress>)
 
     @Update
     fun updateProgress(progress: Progress)

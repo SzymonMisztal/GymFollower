@@ -24,6 +24,33 @@ class ProgressRepositoryImpl(
             emit(false)
         }
 
+    override fun insertProgresses(progresses: List<Progress>): Flow<Boolean> = flow {
+        progressDao.insertProgresses(progresses)
+        emit(true)
+    }.flowOn(Dispatchers.IO)
+        .catch {
+            Log.d(TAG, it.message ?: "")
+            emit(false)
+        }
+
+    override fun upsertProgress(progress: Progress): Flow<Boolean> = flow {
+        progressDao.upsertProgress(progress)
+        emit(true)
+    }.flowOn(Dispatchers.IO)
+        .catch {
+            Log.d(TAG, it.message ?: "")
+            emit(false)
+        }
+
+    override fun upsertProgresses(progresses: List<Progress>): Flow<Boolean> = flow {
+        progressDao.upsertProgresses(progresses)
+        emit(true)
+    }.flowOn(Dispatchers.IO)
+        .catch {
+            Log.d(TAG, it.message ?: "")
+            emit(false)
+        }
+
     override fun updateProgress(progress: Progress): Flow<Boolean> = flow {
         progressDao.updateProgress(progress)
         emit(true)

@@ -5,6 +5,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
+import androidx.room.Upsert
 import com.technosudo.gymfollower.domain.entity.Exercise
 import kotlinx.coroutines.flow.Flow
 
@@ -12,6 +13,13 @@ import kotlinx.coroutines.flow.Flow
 interface ExerciseDao {
     @Insert
     fun insertExercise(exercise: Exercise)
+    @Insert
+    fun insertExercises(exercises: List<Exercise>)
+
+    @Upsert
+    fun upsertExercise(exercise: Exercise)
+    @Upsert
+    fun upsertExercises(exercises: List<Exercise>)
 
     @Update
     fun updateExercise(exercise: Exercise)
