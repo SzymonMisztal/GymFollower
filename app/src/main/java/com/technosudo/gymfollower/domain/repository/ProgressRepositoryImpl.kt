@@ -1,8 +1,10 @@
 package com.technosudo.gymfollower.domain.repository
 
 import android.util.Log
+import com.technosudo.gymfollower.data.Period
 import com.technosudo.gymfollower.data.dao.ProgressDao
-import com.technosudo.gymfollower.domain.entity.Progress
+import com.technosudo.gymfollower.domain.entity.ProgressEntity
+import com.technosudo.gymfollower.helpers.EpochConverter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -15,7 +17,7 @@ private const val TAG = "ProgressRepo"
 class ProgressRepositoryImpl(
     private val progressDao: ProgressDao
 ) : ProgressRepository {
-    override fun insertProgress(progress: Progress): Flow<Boolean> = flow {
+    override fun insertProgress(progress: ProgressEntity): Flow<Boolean> = flow {
         progressDao.insertProgress(progress)
         emit(true)
     }.flowOn(Dispatchers.IO)
@@ -24,7 +26,7 @@ class ProgressRepositoryImpl(
             emit(false)
         }
 
-    override fun insertProgresses(progresses: List<Progress>): Flow<Boolean> = flow {
+    override fun insertProgress(progresses: List<ProgressEntity>): Flow<Boolean> = flow {
         progressDao.insertProgresses(progresses)
         emit(true)
     }.flowOn(Dispatchers.IO)
@@ -33,7 +35,7 @@ class ProgressRepositoryImpl(
             emit(false)
         }
 
-    override fun upsertProgress(progress: Progress): Flow<Boolean> = flow {
+    override fun upsertProgress(progress: ProgressEntity): Flow<Boolean> = flow {
         progressDao.upsertProgress(progress)
         emit(true)
     }.flowOn(Dispatchers.IO)
@@ -42,7 +44,7 @@ class ProgressRepositoryImpl(
             emit(false)
         }
 
-    override fun upsertProgresses(progresses: List<Progress>): Flow<Boolean> = flow {
+    override fun upsertProgress(progresses: List<ProgressEntity>): Flow<Boolean> = flow {
         progressDao.upsertProgresses(progresses)
         emit(true)
     }.flowOn(Dispatchers.IO)
@@ -51,7 +53,7 @@ class ProgressRepositoryImpl(
             emit(false)
         }
 
-    override fun updateProgress(progress: Progress): Flow<Boolean> = flow {
+    override fun updateProgress(progress: ProgressEntity): Flow<Boolean> = flow {
         progressDao.updateProgress(progress)
         emit(true)
     }.flowOn(Dispatchers.IO)
@@ -60,7 +62,7 @@ class ProgressRepositoryImpl(
             emit(false)
         }
 
-    override fun deleteProgress(progress: Progress): Flow<Boolean> = flow {
+    override fun deleteProgress(progress: ProgressEntity): Flow<Boolean> = flow {
         progressDao.deleteProgress(progress)
         emit(true)
     }.flowOn(Dispatchers.IO)
@@ -69,19 +71,27 @@ class ProgressRepositoryImpl(
             emit(false)
         }
 
-    override fun getAllProgressForExercise(id: Int): Flow<List<Progress>> =
+    override fun getAllProgressForExercise(id: Int): Flow<List<ProgressEntity>> =
         progressDao.getAllProgressForExercise(id)
             .flowOn(Dispatchers.IO)
             .catch { Log.d(TAG, it.message ?: "") }
 
     override fun getAllProgressForExerciseWithinTime(
         id: Int,
-        startDate: LocalDate,
-        endDate: LocalDate
-    ): Flow<List<Progress>> = progressDao.getAllProgressForExerciseWithinTime(
-        id = id,
-        startTime = startDate.toEpochDay(),
-        endTime = endDate.toEpochDay()
-    ).flowOn(Dispatchers.IO)
-        .catch { Log.d(TAG, it.message ?: "") }
+        period: Int,
+        periodType: Period,
+        offset: Int
+    ): Flow<List<ProgressEntity>> {
+        val periodEpoch = EpochConverter.periodInEpoch(
+            period = period,
+            periodType = periodType,
+            offset = offset
+        )
+        return progressDao.getAllProgressForExerciseWithinTime(
+            id = id,
+            startTime = periodEpoch.first,
+            endTime = periodEpoch.second
+        ).flowOn(Dispatchers.IO)
+            .catch { Log.d(TAG, it.message ?: "") }
+    }
 }

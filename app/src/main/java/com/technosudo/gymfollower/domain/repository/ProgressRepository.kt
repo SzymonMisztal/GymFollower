@@ -4,25 +4,27 @@ import androidx.room.Delete
 import androidx.room.Query
 import androidx.room.Update
 import com.technosudo.gymfollower.data.Period
-import com.technosudo.gymfollower.domain.entity.Progress
+import com.technosudo.gymfollower.domain.entity.ProgressEntity
+import com.technosudo.gymfollower.ui.navigation.Screen
 import kotlinx.coroutines.flow.Flow
 import java.time.LocalDate
 
 interface ProgressRepository {
-    fun insertProgress(progress: Progress): Flow<Boolean>
-    fun insertProgresses(progresses: List<Progress>): Flow<Boolean>
+    fun insertProgress(progress: ProgressEntity): Flow<Boolean>
+    fun insertProgress(progress: List<ProgressEntity>): Flow<Boolean>
 
-    fun upsertProgress(progress: Progress): Flow<Boolean>
-    fun upsertProgresses(progresses: List<Progress>): Flow<Boolean>
+    fun upsertProgress(progress: ProgressEntity): Flow<Boolean>
+    fun upsertProgress(progress: List<ProgressEntity>): Flow<Boolean>
 
-    fun updateProgress(progress: Progress): Flow<Boolean>
+    fun updateProgress(progress: ProgressEntity): Flow<Boolean>
 
-    fun deleteProgress(progress: Progress): Flow<Boolean>
+    fun deleteProgress(progress: ProgressEntity): Flow<Boolean>
 
-    fun getAllProgressForExercise(id: Int): Flow<List<Progress>>
+    fun getAllProgressForExercise(id: Int): Flow<List<ProgressEntity>>
     fun getAllProgressForExerciseWithinTime(
         id: Int,
-        startDate: LocalDate,
-        endDate: LocalDate
-    ): Flow<List<Progress>>
+        period: Int,
+        periodType: Period,
+        offset: Int = 0
+    ): Flow<List<ProgressEntity>>
 }

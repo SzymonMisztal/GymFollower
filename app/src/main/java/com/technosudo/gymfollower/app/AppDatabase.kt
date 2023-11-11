@@ -6,14 +6,15 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.technosudo.gymfollower.data.dao.ExerciseDao
 import com.technosudo.gymfollower.data.dao.ProgressDao
-import com.technosudo.gymfollower.domain.entity.Exercise
+import com.technosudo.gymfollower.domain.entity.ExerciseEntity
+import com.technosudo.gymfollower.domain.entity.ProgressEntity
 
 @Database(
     entities = [
-        Exercise::class,
-        Process::class
+        ExerciseEntity::class,
+        ProgressEntity::class
     ],
-    version = 1
+    version = 4
 )
 abstract class AppDatabase : RoomDatabase() {
     abstract fun exerciseDao(): ExerciseDao

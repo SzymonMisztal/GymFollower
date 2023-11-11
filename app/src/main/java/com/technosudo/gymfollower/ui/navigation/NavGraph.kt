@@ -12,6 +12,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.technosudo.gymfollower.ui.screens.invidualprogress.IndividualProgressScreen
 import com.technosudo.gymfollower.ui.screens.main.MainScreen
+import com.technosudo.gymfollower.ui.screens.progress.ProgressNavigation
 import com.technosudo.gymfollower.ui.screens.progress.ProgressScreen
 import com.technosudo.gymfollower.ui.screens.settings.SettingsScreen
 
@@ -29,7 +30,7 @@ fun NavGraph(
             MainScreen()
         }
         composable(Screen.Progress.path) {
-            ProgressScreen()
+            ProgressScreen(navigation = ProgressNavigation.default(navController))
         }
         composable(Screen.Settings.path) {
             SettingsScreen()

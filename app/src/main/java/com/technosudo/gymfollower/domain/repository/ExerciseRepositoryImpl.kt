@@ -2,7 +2,7 @@ package com.technosudo.gymfollower.domain.repository
 
 import android.util.Log
 import com.technosudo.gymfollower.data.dao.ExerciseDao
-import com.technosudo.gymfollower.domain.entity.Exercise
+import com.technosudo.gymfollower.domain.entity.ExerciseEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -14,7 +14,7 @@ private const val TAG = "ExerciseRepo"
 class ExerciseRepositoryImpl(
     private val exerciseDao: ExerciseDao
 ) : ExerciseRepository {
-    override fun insertExercise(exercise: Exercise): Flow<Boolean> = flow {
+    override fun insertExercise(exercise: ExerciseEntity): Flow<Boolean> = flow {
         exerciseDao.insertExercise(exercise)
         emit(true)
     }.flowOn(Dispatchers.IO)
@@ -23,7 +23,7 @@ class ExerciseRepositoryImpl(
             emit(false)
         }
 
-    override fun insertExercises(exercises: List<Exercise>): Flow<Boolean> = flow {
+    override fun insertExercises(exercises: List<ExerciseEntity>): Flow<Boolean> = flow {
         exerciseDao.insertExercises(exercises)
         emit(true)
     }.flowOn(Dispatchers.IO)
@@ -32,7 +32,7 @@ class ExerciseRepositoryImpl(
             emit(false)
         }
 
-    override fun upsertExercise(exercise: Exercise): Flow<Boolean> = flow {
+    override fun upsertExercise(exercise: ExerciseEntity): Flow<Boolean> = flow {
         exerciseDao.upsertExercise(exercise)
         emit(true)
     }.flowOn(Dispatchers.IO)
@@ -41,7 +41,7 @@ class ExerciseRepositoryImpl(
             emit(false)
         }
 
-    override fun upsertExercises(exercises: List<Exercise>): Flow<Boolean> = flow {
+    override fun upsertExercises(exercises: List<ExerciseEntity>): Flow<Boolean> = flow {
         exerciseDao.upsertExercises(exercises)
         emit(true)
     }.flowOn(Dispatchers.IO)
@@ -50,7 +50,7 @@ class ExerciseRepositoryImpl(
             emit(false)
         }
 
-    override fun updateExercise(exercise: Exercise): Flow<Boolean> = flow {
+    override fun updateExercise(exercise: ExerciseEntity): Flow<Boolean> = flow {
         exerciseDao.updateExercise(exercise)
         emit(true)
     }.flowOn(Dispatchers.IO)
@@ -59,7 +59,7 @@ class ExerciseRepositoryImpl(
             emit(false)
         }
 
-    override fun updateExercises(exercises: List<Exercise>): Flow<Boolean> = flow {
+    override fun updateExercises(exercises: List<ExerciseEntity>): Flow<Boolean> = flow {
         exerciseDao.updateExercises(exercises)
         emit(true)
     }.flowOn(Dispatchers.IO)
@@ -68,7 +68,7 @@ class ExerciseRepositoryImpl(
             emit(false)
         }
 
-    override fun deleteExercise(exercise: Exercise): Flow<Boolean> = flow {
+    override fun deleteExercise(exercise: ExerciseEntity): Flow<Boolean> = flow {
         exerciseDao.deleteExercise(exercise)
         emit(true)
     }.flowOn(Dispatchers.IO)
@@ -77,11 +77,11 @@ class ExerciseRepositoryImpl(
             emit(false)
         }
 
-    override fun getAll(): Flow<List<Exercise>> = exerciseDao
+    override fun getAll(): Flow<List<ExerciseEntity>> = exerciseDao
         .getAll()
         .flowOn(Dispatchers.IO)
 
-    override fun getById(id: Int): Flow<Exercise> = exerciseDao
+    override fun getById(id: Int): Flow<ExerciseEntity> = exerciseDao
         .getById(id)
         .flowOn(Dispatchers.IO)
         .catch { Log.d(TAG, it.message ?: "") }

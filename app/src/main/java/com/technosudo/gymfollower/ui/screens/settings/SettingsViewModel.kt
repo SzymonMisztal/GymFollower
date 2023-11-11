@@ -2,8 +2,8 @@ package com.technosudo.gymfollower.ui.screens.settings
 
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.ViewModel
-import com.technosudo.gymfollower.domain.entity.Exercise
-import com.technosudo.gymfollower.domain.entity.Progress
+import com.technosudo.gymfollower.domain.entity.ExerciseEntity
+import com.technosudo.gymfollower.domain.entity.ProgressEntity
 import com.technosudo.gymfollower.domain.repository.ExerciseRepository
 import com.technosudo.gymfollower.domain.repository.ProgressRepository
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,28 +20,28 @@ class SettingsViewModel(
 
     fun populateDatabase() {
         exerciseRepository.upsertExercises(listOf(
-            Exercise(
+            ExerciseEntity(
                 id = 0,
                 name = "Exercise 1",
                 weight = 60,
                 icon = 0,
                 position = 0
             ),
-            Exercise(
+            ExerciseEntity(
                 id = 1,
                 name = "Exercise 2",
                 weight = 100,
                 icon = 0,
                 position = 1
             ),
-            Exercise(
+            ExerciseEntity(
                 id = 2,
                 name = "Exercise 3",
                 weight = 130,
                 icon = 0,
                 position = 2
             ),
-            Exercise(
+            ExerciseEntity(
                 id = 3,
                 name = "Exercise 4",
                 weight = 70,
@@ -49,48 +49,41 @@ class SettingsViewModel(
                 position = 3
             )
         ))
-        progressRepository.upsertProgresses(listOf(
-            Progress(
-                id = 0,
+        progressRepository.upsertProgress(listOf(
+            ProgressEntity(
                 exerciseId = 2,
                 weight = 100,
-                LocalDate.of(2023, 10, 23).toEpochDay()
+                dateEpochDay = LocalDate.of(2023, 10, 23).toEpochDay()
             ),
-            Progress(
-                id = 1,
+            ProgressEntity(
                 exerciseId = 2,
                 weight = 105,
-                LocalDate.of(2023, 10, 24).toEpochDay()
+                dateEpochDay = LocalDate.of(2023, 10, 24).toEpochDay()
             ),
-            Progress(
-                id = 2,
+            ProgressEntity(
                 exerciseId = 2,
                 weight = 100,
-                LocalDate.of(2023, 10, 25).toEpochDay()
+                dateEpochDay = LocalDate.of(2023, 10, 25).toEpochDay()
             ),
-            Progress(
-                id = 3,
+            ProgressEntity(
                 exerciseId = 2,
                 weight = 110,
-                LocalDate.of(2023, 10, 26).toEpochDay()
+                dateEpochDay = LocalDate.of(2023, 10, 26).toEpochDay()
             ),
-            Progress(
-                id = 4,
+            ProgressEntity(
                 exerciseId = 2,
                 weight = 100,
-                LocalDate.of(2023, 10, 27).toEpochDay()
+                dateEpochDay = LocalDate.of(2023, 10, 27).toEpochDay()
             ),
-            Progress(
-                id = 5,
+            ProgressEntity(
                 exerciseId = 2,
                 weight = 115,
-                LocalDate.of(2023, 10, 28).toEpochDay()
+                dateEpochDay = LocalDate.of(2023, 10, 28).toEpochDay()
             ),
-            Progress(
-                id = 6,
+            ProgressEntity(
                 exerciseId = 2,
                 weight = 120,
-                LocalDate.of(2023, 10, 29).toEpochDay()
+                dateEpochDay = LocalDate.of(2023, 10, 29).toEpochDay()
             )
         ))
     }

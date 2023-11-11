@@ -3,6 +3,7 @@ package com.technosudo.gymfollower.ui.screens.progress
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -25,6 +26,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.technosudo.gymfollower.data.ExerciseData
+import com.technosudo.gymfollower.data.GraphCardData
 import com.technosudo.gymfollower.data.ProgressData
 import com.technosudo.gymfollower.ui.components.Graph
 import com.technosudo.gymfollower.ui.components.TextLarge
@@ -33,10 +35,12 @@ import com.technosudo.gymfollower.ui.theme.HeightSpacer
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun ProgressScreen() {
+fun ProgressScreen(navigation: ProgressNavigation) {
 
     val viewModel = koinViewModel<ProgressViewModel>()
     val uiState by viewModel.uiState.collectAsState()
+
+    viewModel.init(navigation)
 
     ProgressScreenContent(
         uiState = uiState
@@ -58,11 +62,8 @@ private fun ProgressScreenContent(
             modifier = Modifier
                 .padding(horizontal = Dimensions.space10)
         ) {
-            items(listOf(1, 2, 3, 4)) {
-                GraphCard(
-                    exercise = ExerciseData(0, "Exercise name", 1, 0, 0),
-                    data = uiState.data
-                )
+            items(uiState.data) {
+                GraphCard(data = it)
                 Dimensions.space10.HeightSpacer()
             }
         }
@@ -72,24 +73,23 @@ private fun ProgressScreenContent(
 @Composable
 private fun GraphCard(
     modifier: Modifier = Modifier,
-    exercise: ExerciseData,
-    data: List<ProgressData>,
-    onClick: () -> Unit = {}
+    data: GraphCardData
 ) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .clip(shape = RoundedCornerShape(Dimensions.exerciseClip))
-            .background(MaterialTheme.colorScheme.primary),
+            .background(MaterialTheme.colorScheme.primary)
+            .clickable { data.onClick() },
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        TextLarge(text = exercise.name)
+        TextLarge(text = data.exercise.name)
         Box {
             Graph(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(Dimensions.graphCardHeight),
-                data = data,
+                data = data.progress,
                 graphColor = Color.Green,
                 labels = false
             )

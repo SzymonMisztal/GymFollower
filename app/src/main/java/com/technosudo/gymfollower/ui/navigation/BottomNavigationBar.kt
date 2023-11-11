@@ -69,13 +69,6 @@ fun BottomNavigationBar(
                             },
                             alwaysShowLabel = true,
                             selected = currentDestination?.hierarchy?.any { it.route == screen.path } == true,
-                            colors = NavigationBarItemColors(
-                                selectedIconColor = MaterialTheme.colorScheme.onBackground,
-                                selectedTextColor = MaterialTheme.colorScheme.onBackground,
-                                selectedIndicatorColor = MaterialTheme.colorScheme.secondary,
-                                unselectedIconColor = MaterialTheme.colorScheme.onBackground,
-                                unselectedTextColor = MaterialTheme.colorScheme.onBackground
-                            ),
                             onClick = {
                                 navController.navigate(screen.path) { launchSingleTop = true }
                             }
