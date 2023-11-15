@@ -1,6 +1,7 @@
 package com.technosudo.gymfollower.ui.screens.progress
 
 import androidx.navigation.NavController
+import com.technosudo.gymfollower.extensions.appendArguments
 import com.technosudo.gymfollower.ui.navigation.Screen
 
 interface ProgressNavigation {
@@ -10,7 +11,7 @@ interface ProgressNavigation {
     companion object {
         fun default(navController: NavController) = object : ProgressNavigation {
             override fun openIndividualProgress(id: Int) {
-                navController.navigate(Screen.IndividualProgress.path.plus(id))
+                navController.navigate(Screen.IndividualProgress.path.appendArguments(id))
             }
         }
     }

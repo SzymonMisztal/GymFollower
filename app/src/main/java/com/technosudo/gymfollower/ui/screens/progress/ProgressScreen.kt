@@ -30,9 +30,11 @@ import com.technosudo.gymfollower.data.GraphCardData
 import com.technosudo.gymfollower.data.ProgressData
 import com.technosudo.gymfollower.ui.components.Graph
 import com.technosudo.gymfollower.ui.components.TextLarge
+import com.technosudo.gymfollower.ui.components.TextMedium
 import com.technosudo.gymfollower.ui.theme.Dimensions
 import com.technosudo.gymfollower.ui.theme.HeightSpacer
 import org.koin.androidx.compose.koinViewModel
+import java.time.LocalDate
 
 @Composable
 fun ProgressScreen(navigation: ProgressNavigation) {
@@ -85,14 +87,21 @@ private fun GraphCard(
     ) {
         TextLarge(text = data.exercise.name)
         Box {
-            Graph(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(Dimensions.graphCardHeight),
-                data = data.progress,
-                graphColor = Color.Green,
-                labels = false
-            )
+            if(data.progress.isNotEmpty()) {
+                Graph(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(Dimensions.graphCardHeight),
+                    data = data.progress,
+                    graphColor = Color.Green,
+                    labels = false
+                )
+            } else {
+                TextMedium(
+                    modifier = Modifier.align(Alignment.Center),
+                    text = "No data"
+                )
+            }
         }
     }
 }

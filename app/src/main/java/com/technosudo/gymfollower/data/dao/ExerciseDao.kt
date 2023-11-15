@@ -12,26 +12,27 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface ExerciseDao {
     @Insert
-    fun insertExercise(exercise: ExerciseEntity)
+    fun insertExercise(exercise: ExerciseEntity): Long
     @Insert
-    fun insertExercises(exercises: List<ExerciseEntity>)
+    fun insertExercises(exercises: List<ExerciseEntity>): List<Long>
 
     @Upsert
-    fun upsertExercise(exercise: ExerciseEntity)
+    fun upsertExercise(exercise: ExerciseEntity): Long
     @Upsert
-    fun upsertExercises(exercises: List<ExerciseEntity>)
+    fun upsertExercises(exercises: List<ExerciseEntity>): List<Long>
 
     @Update
-    fun updateExercise(exercise: ExerciseEntity)
-    @Update
-    fun updateExercises(exercises: List<ExerciseEntity>)
+    fun updateExercise(exercise: ExerciseEntity): Int
 
     @Delete
-    fun deleteExercise(exercise: ExerciseEntity)
+    fun deleteExercise(exercise: ExerciseEntity): Int
 
     @Query("SELECT * FROM exercise")
     fun getAll(): Flow<List<ExerciseEntity>>
 
     @Query("SELECT * FROM exercise WHERE id = :id")
     fun getById(id: Int): Flow<ExerciseEntity>
+
+    @Query("SELECT MAX(position) FROM exercise")
+    fun getCurrentLastPosition(): Flow<Int>
 }

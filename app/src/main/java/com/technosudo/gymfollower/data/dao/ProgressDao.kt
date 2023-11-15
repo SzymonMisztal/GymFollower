@@ -12,20 +12,20 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface ProgressDao {
     @Insert
-    fun insertProgress(progress: ProgressEntity)
+    fun insertProgress(progress: ProgressEntity): Long
     @Insert
-    fun insertProgresses(progresses: List<ProgressEntity>)
+    fun insertProgress(progress: List<ProgressEntity>): List<Long>
 
     @Upsert
-    fun upsertProgress(progress: ProgressEntity)
+    fun upsertProgress(progress: ProgressEntity): Long
     @Upsert
-    fun upsertProgresses(progresses: List<ProgressEntity>)
+    fun upsertProgress(progress: List<ProgressEntity>): List<Long>
 
     @Update
-    fun updateProgress(progress: ProgressEntity)
+    fun updateProgress(progress: ProgressEntity): Int
 
     @Delete
-    fun deleteProgress(progress: ProgressEntity)
+    fun deleteProgress(progress: ProgressEntity): Int
 
     @Query("SELECT * FROM progress WHERE exerciseId = :id")
     fun getAllProgressForExercise(id: Int): Flow<List<ProgressEntity>>

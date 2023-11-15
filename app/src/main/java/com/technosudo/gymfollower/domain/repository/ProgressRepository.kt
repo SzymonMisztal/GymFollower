@@ -10,15 +10,15 @@ import kotlinx.coroutines.flow.Flow
 import java.time.LocalDate
 
 interface ProgressRepository {
-    fun insertProgress(progress: ProgressEntity): Flow<Boolean>
-    fun insertProgress(progress: List<ProgressEntity>): Flow<Boolean>
+    fun insertProgress(progress: ProgressEntity): Long
+    fun insertProgress(progress: List<ProgressEntity>): List<Long>
 
-    fun upsertProgress(progress: ProgressEntity): Flow<Boolean>
-    fun upsertProgress(progress: List<ProgressEntity>): Flow<Boolean>
+    fun upsertProgress(progress: ProgressEntity): Long
+    fun upsertProgress(progress: List<ProgressEntity>): List<Long>
 
-    fun updateProgress(progress: ProgressEntity): Flow<Boolean>
+    fun updateProgress(progress: ProgressEntity): Int
 
-    fun deleteProgress(progress: ProgressEntity): Flow<Boolean>
+    fun deleteProgress(progress: ProgressEntity): Int
 
     fun getAllProgressForExercise(id: Int): Flow<List<ProgressEntity>>
     fun getAllProgressForExerciseWithinTime(

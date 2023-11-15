@@ -12,32 +12,10 @@ data class IndividualProgressUiState(
 ) {
     companion object {
         fun default(
-            progressData: List<ProgressData> = listOf(
-                ProgressData(
-                    date = LocalDate.of(2023, 10, 23),
-                    weight = 50
-                ),
-                ProgressData(
-                    date = LocalDate.of(2023, 10, 24),
-                    weight = 45
-                ),
-                ProgressData(
-                    date = LocalDate.of(2023, 10, 25),
-                    weight = 70
-                ),
-                ProgressData(
-                    date = LocalDate.of(2023, 10, 26),
-                    weight = 40
-                ),
-                ProgressData(
-                    date = LocalDate.of(2023, 10, 27),
-                    weight = 70
-                ),
-                ProgressData(
-                    date = LocalDate.of(2023, 10, 24),
-                    weight = 45
-                )
-            ),
+            progressData: List<ProgressData> = listOf(ProgressData(
+                date = LocalDate.now(),
+                weight = 0
+            )),
             chipData: List<ChipData> = emptyList(),
             statData: List<StatData> = emptyList()
         ) = IndividualProgressUiState(

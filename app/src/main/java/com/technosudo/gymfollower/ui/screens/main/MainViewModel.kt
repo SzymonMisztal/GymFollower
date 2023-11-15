@@ -1,56 +1,41 @@
 package com.technosudo.gymfollower.ui.screens.main
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.technosudo.gymfollower.R
 import com.technosudo.gymfollower.data.ExerciseData
+import com.technosudo.gymfollower.data.ExerciseData.Companion.toData
 import com.technosudo.gymfollower.data.MenuOption
+import com.technosudo.gymfollower.domain.repository.ExerciseRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
-class MainViewModel : ViewModel() {
+class MainViewModel(
+    private val exerciseRepository: ExerciseRepository
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow(MainUiState.default())
     val uiState = _uiState.asStateFlow()
 
     init {
         _uiState.update {
-            it.copy(exercises = sortedMapOf(
-                    0 to ExerciseData(
-                        id = 0,
-                        name = "Deadlift",
-                        weight = 800,
-                        icon = R.drawable.ic_exercise,
-                        0
-                    ),
-                    1 to ExerciseData(
-                        id = 1,
-                        name = "Squad",
-                        weight = 80,
-                        icon = R.drawable.ic_exercise,
-                        position = 1
-                    ),
-                    2 to ExerciseData(
-                        id = 2,
-                        name = "Leg press",
-                        weight = 160,
-                        icon = R.drawable.ic_exercise,
-                        position = 2
-                    ),
-                    3 to ExerciseData(
-                        id = 3,
-                        name = "Bench press",
-                        weight = 100,
-                        icon = R.drawable.ic_exercise,
-                        position = 3
-                    ),
-                ),
-                menuOptions = listOf(
-                    MenuOption(R.string.main_menu_1) {
-                        setEditMode()
-                    }
-                )
-            )
+            it.copy(menuOptions = listOf(
+                MenuOption(R.string.main_menu_1) {
+                    setEditMode()
+                }
+            ))
+        }
+    }
+
+    fun init() {
+        viewModelScope.launch {
+            exerciseRepository.getAll().collect{ list ->
+//                _uiState.update {
+//                    it.copy(exercises = list.map { element -> element.toData() })
+//                }
+            }
         }
     }
 

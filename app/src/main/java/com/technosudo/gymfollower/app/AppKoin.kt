@@ -5,6 +5,7 @@ import com.technosudo.gymfollower.domain.repository.ExerciseRepository
 import com.technosudo.gymfollower.domain.repository.ExerciseRepositoryImpl
 import com.technosudo.gymfollower.domain.repository.ProgressRepository
 import com.technosudo.gymfollower.domain.repository.ProgressRepositoryImpl
+import com.technosudo.gymfollower.ui.screens.createexercise.CreateExerciseViewModel
 import com.technosudo.gymfollower.ui.screens.invidualprogress.IndividualProgressViewModel
 import com.technosudo.gymfollower.ui.screens.main.MainViewModel
 import com.technosudo.gymfollower.ui.screens.progress.ProgressViewModel
@@ -35,6 +36,7 @@ object AppKoin {
     }
 
     private val viewModels = module {
+        viewModelOf(::CreateExerciseViewModel)
         viewModelOf(::MainViewModel)
         viewModelOf(::ProgressViewModel)
         viewModelOf(::IndividualProgressViewModel)

@@ -4,18 +4,19 @@ import com.technosudo.gymfollower.domain.entity.ExerciseEntity
 import kotlinx.coroutines.flow.Flow
 
 interface ExerciseRepository {
-    fun insertExercise(exercise: ExerciseEntity): Flow<Boolean>
-    fun insertExercises(exercises: List<ExerciseEntity>): Flow<Boolean>
+    fun insertExercise(exercise: ExerciseEntity): Long
+    fun insertExercises(exercises: List<ExerciseEntity>): List<Long>
 
-    fun upsertExercise(exercise: ExerciseEntity): Flow<Boolean>
-    fun upsertExercises(exercises: List<ExerciseEntity>): Flow<Boolean>
+    fun upsertExercise(exercise: ExerciseEntity): Long
+    fun upsertExercises(exercises: List<ExerciseEntity>): List<Long>
 
-    fun updateExercise(exercise: ExerciseEntity): Flow<Boolean>
-    fun updateExercises(exercises: List<ExerciseEntity>): Flow<Boolean>
+    fun updateExercise(exercise: ExerciseEntity): Int
 
-    fun deleteExercise(exercise: ExerciseEntity): Flow<Boolean>
+    fun deleteExercise(exercise: ExerciseEntity): Int
 
     fun getAll(): Flow<List<ExerciseEntity>>
 
     fun getById(id: Int): Flow<ExerciseEntity>
+
+    fun getCurrentLastPosition(): Flow<Int>
 }

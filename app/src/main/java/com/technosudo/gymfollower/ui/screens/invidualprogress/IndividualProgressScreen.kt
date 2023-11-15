@@ -24,6 +24,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.technosudo.gymfollower.R
 import com.technosudo.gymfollower.data.ChipData
+import com.technosudo.gymfollower.data.ProgressData
 import com.technosudo.gymfollower.data.StatData
 import com.technosudo.gymfollower.ui.components.ButtonCommon
 import com.technosudo.gymfollower.ui.components.Graph
@@ -41,13 +42,14 @@ fun IndividualProgressScreen(id: Int?) {
     val uiState by viewModel.uiState.collectAsState ()
     val uiInteraction = IndividualProgressUiInteraction.default()
 
+    id?.let { viewModel.init(it) }
+
     IndividualProgressScreenContent(
         uiState = uiState,
         uiInteraction = uiInteraction
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun IndividualProgressScreenContent(
     uiState: IndividualProgressUiState,
@@ -59,7 +61,7 @@ private fun IndividualProgressScreenContent(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         item {
-            GraphComponent(uiState = uiState)
+            GraphComponent(uiState.progressData)
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -123,7 +125,7 @@ private fun Chip(data: ChipData) {
 }
 
 @Composable
-private fun GraphComponent(uiState: IndividualProgressUiState) {
+private fun GraphComponent(data: List<ProgressData>) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -133,7 +135,7 @@ private fun GraphComponent(uiState: IndividualProgressUiState) {
             modifier = Modifier
                 .fillMaxWidth()
                 .height(300.dp),
-            data = uiState.progressData,
+            data = data,
             labels = true,
         )
     }

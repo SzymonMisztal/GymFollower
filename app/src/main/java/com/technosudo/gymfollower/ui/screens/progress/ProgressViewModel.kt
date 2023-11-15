@@ -45,7 +45,8 @@ class ProgressViewModel(
                 ).first().map { it.toData() }
                 data.add(GraphCardData(
                     exercise = exercise,
-                    progress = progressList
+                    progress = progressList,
+                    onClick = { navigation.openIndividualProgress(exercise.id) }
                 ))
             }
 

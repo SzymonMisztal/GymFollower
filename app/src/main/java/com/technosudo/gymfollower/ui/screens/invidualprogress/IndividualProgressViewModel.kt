@@ -2,15 +2,22 @@ package com.technosudo.gymfollower.ui.screens.invidualprogress
 
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.technosudo.gymfollower.R
 import com.technosudo.gymfollower.data.ChipData
 import com.technosudo.gymfollower.data.Period
+import com.technosudo.gymfollower.data.ProgressData.Companion.toData
 import com.technosudo.gymfollower.data.StatData
+import com.technosudo.gymfollower.domain.repository.ProgressRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
-class IndividualProgressViewModel : ViewModel() {
+class IndividualProgressViewModel(
+    private val progressRepository: ProgressRepository
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow(IndividualProgressUiState.default())
     val uiState = _uiState.asStateFlow()
@@ -23,6 +30,21 @@ class IndividualProgressViewModel : ViewModel() {
             )
         }
         onChipSelected(Period.Weeks)
+    }
+
+    fun init(id: Int) {
+        viewModelScope.launch {
+            val result = progressRepository.getAllProgressForExerciseWithinTime(
+                id = id,
+                period = 10,
+                periodType = Period.Weeks
+            )
+            result.collect { data ->
+                _uiState.update {
+                    it.copy(progressData = data.map { entity -> entity.toData() })
+                }
+            }
+        }
     }
 
     fun onChipSelected(period: Period) {

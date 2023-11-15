@@ -20,6 +20,8 @@
     <string name="main_menu_1">Edit</string>
     <string name="main_dialog">Change name</string>
 
+    <string name="create_exercise_input_name">Name</string>
+
     <string name="chip_days">Days</string>
     <string name="chip_weeks">Weeks</string>
     <string name="chip_months">Months</string>

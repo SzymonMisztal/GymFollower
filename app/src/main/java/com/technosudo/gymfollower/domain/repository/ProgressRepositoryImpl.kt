@@ -17,59 +17,29 @@ private const val TAG = "ProgressRepo"
 class ProgressRepositoryImpl(
     private val progressDao: ProgressDao
 ) : ProgressRepository {
-    override fun insertProgress(progress: ProgressEntity): Flow<Boolean> = flow {
-        progressDao.insertProgress(progress)
-        emit(true)
-    }.flowOn(Dispatchers.IO)
-        .catch {
-            Log.d(TAG, it.message ?: "")
-            emit(false)
-        }
+    override fun insertProgress(progress: ProgressEntity): Long {
+        return progressDao.insertProgress(progress)
+    }
 
-    override fun insertProgress(progresses: List<ProgressEntity>): Flow<Boolean> = flow {
-        progressDao.insertProgresses(progresses)
-        emit(true)
-    }.flowOn(Dispatchers.IO)
-        .catch {
-            Log.d(TAG, it.message ?: "")
-            emit(false)
-        }
+    override fun insertProgress(progresses: List<ProgressEntity>): List<Long> {
+        return progressDao.insertProgress(progresses)
+    }
 
-    override fun upsertProgress(progress: ProgressEntity): Flow<Boolean> = flow {
-        progressDao.upsertProgress(progress)
-        emit(true)
-    }.flowOn(Dispatchers.IO)
-        .catch {
-            Log.d(TAG, it.message ?: "")
-            emit(false)
-        }
+    override fun upsertProgress(progress: ProgressEntity): Long {
+        return progressDao.upsertProgress(progress)
+    }
 
-    override fun upsertProgress(progresses: List<ProgressEntity>): Flow<Boolean> = flow {
-        progressDao.upsertProgresses(progresses)
-        emit(true)
-    }.flowOn(Dispatchers.IO)
-        .catch {
-            Log.d(TAG, it.message ?: "")
-            emit(false)
-        }
+    override fun upsertProgress(progress: List<ProgressEntity>): List<Long> {
+        return progressDao.upsertProgress(progress)
+    }
 
-    override fun updateProgress(progress: ProgressEntity): Flow<Boolean> = flow {
-        progressDao.updateProgress(progress)
-        emit(true)
-    }.flowOn(Dispatchers.IO)
-        .catch {
-            Log.d(TAG, it.message ?: "")
-            emit(false)
-        }
+    override fun updateProgress(progress: ProgressEntity): Int {
+        return progressDao.updateProgress(progress)
+    }
 
-    override fun deleteProgress(progress: ProgressEntity): Flow<Boolean> = flow {
-        progressDao.deleteProgress(progress)
-        emit(true)
-    }.flowOn(Dispatchers.IO)
-        .catch {
-            Log.d(TAG, it.message ?: "")
-            emit(false)
-        }
+    override fun deleteProgress(progress: ProgressEntity): Int {
+        return progressDao.deleteProgress(progress)
+    }
 
     override fun getAllProgressForExercise(id: Int): Flow<List<ProgressEntity>> =
         progressDao.getAllProgressForExercise(id)

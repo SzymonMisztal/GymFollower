@@ -3,6 +3,7 @@ package com.technosudo.gymfollower.ui.components
 import android.graphics.Paint
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -24,6 +25,14 @@ fun Graph(
     graphColor: Color = Color.Green,
     backgroundColor: Color? = null
 ) {
+    if(data.isEmpty()) {
+        TextMedium(
+            modifier = Modifier.fillMaxWidth(),
+            text = "No data"
+        )
+        return
+    }
+
     val spacing = if(labels) 100f else 0f
     val transparentGraphColor = remember {
         graphColor.copy(alpha = 0.5f)
