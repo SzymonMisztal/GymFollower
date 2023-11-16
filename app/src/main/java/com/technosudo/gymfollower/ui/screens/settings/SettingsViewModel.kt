@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.technosudo.gymfollower.R
 import com.technosudo.gymfollower.domain.entity.ExerciseEntity
 import com.technosudo.gymfollower.domain.entity.ProgressEntity
 import com.technosudo.gymfollower.domain.repository.ExerciseRepository
@@ -32,21 +33,21 @@ class SettingsViewModel(
                     id = 1,
                     name = "Exercise 2",
                     weight = 100,
-                    icon = 0,
+                    icon = R.drawable.ic_exercise,
                     position = 1
                 ),
                 ExerciseEntity(
                     id = 2,
                     name = "Exercise 3",
                     weight = 130,
-                    icon = 0,
+                    icon = R.drawable.ic_exercise,
                     position = 2
                 ),
                 ExerciseEntity(
                     id = 3,
                     name = "Exercise 4",
                     weight = 70,
-                    icon = 0,
+                    icon = R.drawable.ic_exercise,
                     position = 3
                 )
             ))

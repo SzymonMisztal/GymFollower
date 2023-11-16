@@ -7,6 +7,11 @@ import com.technosudo.gymfollower.data.ExerciseData
 import com.technosudo.gymfollower.data.ExerciseData.Companion.toData
 import com.technosudo.gymfollower.data.MenuOption
 import com.technosudo.gymfollower.domain.repository.ExerciseRepository
+import com.technosudo.gymfollower.ui.theme.GreenDark
+import com.technosudo.gymfollower.ui.theme.GreenLight
+import com.technosudo.gymfollower.ui.theme.GrizzlyWhite
+import com.technosudo.gymfollower.ui.theme.RedLight
+import com.technosudo.gymfollower.ui.theme.RedNormal
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -27,30 +32,30 @@ class MainViewModel(
                 }
             ))
         }
-    }
-
-    fun init() {
         viewModelScope.launch {
-            exerciseRepository.getAll().collect{ list ->
-//                _uiState.update {
-//                    it.copy(exercises = list.map { element -> element.toData() })
-//                }
+            exerciseRepository.getAll().collect{
+                val map = sortedMapOf<Int, ExerciseData>()
+                for(element in it)
+                    map[element.position] = element.toData()
+                _uiState.update {
+                    it.copy(exercises = map)
+                }
             }
         }
     }
 
     fun setNormalMode() {
         _uiState.update {
-            it.copy(
-                editMode = false
-            )
+            it.copy(editMode = false)
         }
     }
     fun setEditMode() {
         _uiState.update {
             it.copy(
                 editMode = true,
-                exercisesEdit = it.exercises.toSortedMap()
+                exercisesEdit = it.exercises.mapValues { (_, value) ->
+                    value.copy(numberColor = null)
+                }.toSortedMap()
             )
         }
     }
@@ -96,8 +101,18 @@ class MainViewModel(
     }
     fun increaseWeight() {
         _uiState.value.selectedExercise?.let {
+            val weight = _uiState.value.exercises[it.first]?.weight ?: 0
+            val weightNew = it.second.weight + _uiState.value.weightIncrease
+            val color = when {
+                weightNew > weight * 1.1 -> GreenDark
+                weightNew > weight -> GreenLight
+                weightNew == weight -> GrizzlyWhite
+                weightNew < weight * 0.9 -> RedNormal
+                else -> RedLight
+            }
             val exerciseUpdated = it.second.copy(
-                weight = it.second.weight + _uiState.value.weightIncrease
+                weight = weightNew,
+                numberColor = color
             )
             val map = uiState.value.exercisesEdit
             map[it.first] = exerciseUpdated
@@ -109,8 +124,18 @@ class MainViewModel(
     }
     fun decreaseWeight() {
         _uiState.value.selectedExercise?.let {
+            val weight = _uiState.value.exercises[it.first]?.weight ?: 0
+            val weightNew = it.second.weight - _uiState.value.weightIncrease
+            val color = when {
+                weightNew > weight * 1.1 -> GreenDark
+                weightNew > weight -> GreenLight
+                weightNew == weight -> GrizzlyWhite
+                weightNew < weight * 0.9 -> RedNormal
+                else -> RedLight
+            }
             val exerciseUpdated = it.second.copy(
-                weight = it.second.weight - _uiState.value.weightIncrease
+                weight = weightNew,
+                numberColor = color
             )
             val map = uiState.value.exercisesEdit
             map[it.first] = exerciseUpdated

@@ -47,7 +47,7 @@ import com.technosudo.gymfollower.ui.theme.RedNormal
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun MainScreen() {
+fun MainScreen(navigation: MainScreenNavigation) {
 
     val viewModel = koinViewModel<MainViewModel>()
     val uiState by viewModel.uiState.collectAsState()
@@ -55,14 +55,16 @@ fun MainScreen() {
 
     MainScreenContent(
         uiState = uiState,
-        uiInteraction = uiInteraction
+        uiInteraction = uiInteraction,
+        navigation = navigation
     )
 }
 
 @Composable
 private fun MainScreenContent(
     uiState: MainUiState,
-    uiInteraction: MainUiInteraction
+    uiInteraction: MainUiInteraction,
+    navigation: MainScreenNavigation
 ) {
     if (uiState.isNameDialogVisible) {
         SimpleDialog(
@@ -105,6 +107,25 @@ private fun MainScreenContent(
                             onHold = { uiInteraction.setEditMode() }
                         )
                         Dimensions.space10.HeightSpacer()
+                    }
+                }
+                item{
+                    IconButton(
+                        modifier = Modifier
+                            .clip(shape = RoundedCornerShape(50))
+                            .background(GreenNormal),
+                        onClick = { navigation.openCreateExercise() }
+                    ) {
+                        Image(
+                            modifier = Modifier
+                                .height(Dimensions.exerciseCardHeight)
+                                .width(Dimensions.exerciseCardHeight),
+                            painter = painterResource(
+                                id = R.drawable.ic_plus
+                            ),
+                            contentDescription = stringResource(id = R.string.image_content_description),
+                            colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.onBackground)
+                        )
                     }
                 }
             }
@@ -255,6 +276,7 @@ private fun ExerciseCardEdit(
                     .weight(1f),
                 onClick = {
                     uiInteraction.selectExercise(exerciseData)
+                    uiInteraction.onTextChange(exerciseData.second.name)
                     uiInteraction.setNameDialogVisible()
                 }
             ) {
@@ -302,13 +324,19 @@ private fun ExerciseCardEdit(
                 }
             }
             VerticalDivider()
-            NumberBox(num = exerciseData.second.weight)
+            NumberBox(
+                num = exerciseData.second.weight,
+                color = exerciseData.second.numberColor
+            )
         }
     }
 }
 
 @Composable
-private fun NumberBox(num: Int) {
+private fun NumberBox(
+    num: Int,
+    color: Color? = null
+) {
     Box(
         modifier = Modifier
             .fillMaxHeight()
@@ -318,7 +346,7 @@ private fun NumberBox(num: Int) {
         Text(
             text = num.toString(),
             style = MaterialTheme.typography.headlineLarge,
-            color = MaterialTheme.colorScheme.onBackground
+            color = color ?: MaterialTheme.colorScheme.onBackground
         )
     }
 }

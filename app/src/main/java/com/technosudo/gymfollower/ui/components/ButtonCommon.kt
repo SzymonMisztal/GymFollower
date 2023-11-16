@@ -33,7 +33,7 @@ fun ButtonCommon(
         else MaterialTheme.colorScheme.onSecondary
     val colors = when (type) {
         ButtonCommonType.Primary -> ButtonDefaults.buttonColors(
-            containerColor = MaterialTheme.colorScheme.primary,
+            containerColor = MaterialTheme.colorScheme.secondary,
             contentColor = MaterialTheme.colorScheme.onPrimary,
         )
         ButtonCommonType.Secondary -> ButtonDefaults.buttonColors(
@@ -47,7 +47,7 @@ fun ButtonCommon(
     }
     val border = if (type == ButtonCommonType.Alternative) BorderStroke(
         width = Dimensions.space2,
-        color = MaterialTheme.colorScheme.primary
+        color = MaterialTheme.colorScheme.secondary
     ) else null
 
     Button(

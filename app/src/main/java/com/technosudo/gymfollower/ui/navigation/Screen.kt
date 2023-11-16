@@ -36,5 +36,6 @@ sealed class Screen(
     )
 
     object IndividualProgress : Screen(path = "individualProgress/{id}")
+    object CreateExercise : Screen(path = "createExercise")
 
 }
