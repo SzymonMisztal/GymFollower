@@ -15,6 +15,8 @@
     <string name="bottom_bar_progress_description">Progress screen</string>
     <string name="bottom_bar_settings_description">Settings screen</string>
 
+    <string name="top_bar_add_exercise">Add exercise</string>
+
     <string name="input_field_error">This field cannot be empty</string>
 
     <string name="main_menu_1">Edit</string>

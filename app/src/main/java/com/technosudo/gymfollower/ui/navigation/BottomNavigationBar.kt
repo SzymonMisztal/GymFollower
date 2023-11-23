@@ -23,6 +23,11 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 
+private val SCREENS_WITHOUT_BOTTOM_BAR = listOf(
+    Screen.CreateExercise.path,
+    Screen.IndividualProgress.path
+)
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BottomNavigationBar(
@@ -39,10 +44,15 @@ fun BottomNavigationBar(
 
     Log.d("route", currentDestination?.route ?: "no route")
 
+    val bottomBarState = when (currentDestination?.route) {
+        in SCREENS_WITHOUT_BOTTOM_BAR -> false
+        else -> true
+    }
+
     Scaffold(
         bottomBar = {
             AnimatedVisibility(
-                visible = true,
+                visible = bottomBarState,
                 enter = slideInVertically(initialOffsetY = { s -> s } ),
                 exit = slideOutVertically(targetOffsetY = { t -> t } )
             ) {

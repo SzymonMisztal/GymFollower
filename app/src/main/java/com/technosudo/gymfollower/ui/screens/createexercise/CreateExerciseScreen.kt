@@ -25,8 +25,11 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.technosudo.gymfollower.R
+import com.technosudo.gymfollower.ui.components.BorderedLabel
+import com.technosudo.gymfollower.ui.components.DecisionBar
 import com.technosudo.gymfollower.ui.components.InputField
 import com.technosudo.gymfollower.ui.components.TextLarge
+import com.technosudo.gymfollower.ui.components.TopBar
 import com.technosudo.gymfollower.ui.theme.Dimensions
 import org.koin.androidx.compose.koinViewModel
 
@@ -50,20 +53,35 @@ fun CreateExerciseScreenContent(
     uiInteraction: CreateExerciseUiInteraction,
     navigation: CreateExerciseNavigation
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(Dimensions.space10),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.SpaceEvenly
-    ) {
-        InputField(
-            data = uiState.inputData,
-            onValueChange = { uiInteraction.onTextChange(it) }
-        )
-        WeightPickerPanel(
-            uiState = uiState,
-            uiInteraction = uiInteraction
+
+    Column {
+        TopBar(
+            text = stringResource(R.string.top_bar_add_exercise)
+        ) { navigation.goBack() }
+
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f)
+                .padding(Dimensions.space10),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.SpaceEvenly
+        ) {
+            InputField(
+                data = uiState.inputData,
+                onValueChange = { uiInteraction.onTextChange(it) }
+            )
+            WeightPickerPanel(
+                uiState = uiState,
+                uiInteraction = uiInteraction
+            )
+        }
+
+        DecisionBar(
+            button1Name = stringResource(id = R.string.cancel),
+            button1OnClick = { uiInteraction.onCancel(navigation) },
+            button2Name = stringResource(id = R.string.confirm),
+            button2OnClick = { uiInteraction.onConfirm(navigation) }
         )
     }
 }
@@ -94,25 +112,12 @@ fun WeightPickerPanel(
                 colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.onBackground)
             )
         }
-        Box(
-            modifier = Modifier
-                .clip(RoundedCornerShape(Dimensions.exerciseClip))
-                .border(
-                    width = Dimensions.border,
-                    color = MaterialTheme.colorScheme.secondary
-                )
-        ) {
-            TextLarge(
-                modifier = Modifier
-                    .align(Alignment.Center),
-                text = uiState.weight.toString()
-            )
-        }
+        BorderedLabel(text = uiState.weight.toString())
         IconButton(
             modifier = Modifier
                 .clip(shape = RoundedCornerShape(50))
                 .background(MaterialTheme.colorScheme.secondary),
-            onClick = { uiInteraction.decreaseWeight() }
+            onClick = { uiInteraction.increaseWeight() }
         ) {
             Image(
                 modifier = Modifier

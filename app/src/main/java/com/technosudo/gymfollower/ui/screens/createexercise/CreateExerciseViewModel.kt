@@ -5,11 +5,13 @@ import androidx.lifecycle.viewModelScope
 import com.technosudo.gymfollower.domain.entity.ExerciseEntity
 import com.technosudo.gymfollower.domain.repository.ExerciseRepository
 import com.technosudo.gymfollower.domain.repository.ProgressRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class CreateExerciseViewModel(
     private val exerciseRepository: ExerciseRepository,
@@ -30,12 +32,13 @@ class CreateExerciseViewModel(
         }
     }
     fun decreaseWeight() {
+        if(_uiState.value.weight >= 5)
         _uiState.update {
             it.copy(weight = it.weight - 5)
         }
     }
     fun onConfirm(navigation: CreateExerciseNavigation) {
-        viewModelScope.launch {
+        viewModelScope.launch { withContext(Dispatchers.IO) {
             val lastPosition = exerciseRepository
                 .getCurrentLastPosition()
                 .firstOrNull()
@@ -47,7 +50,7 @@ class CreateExerciseViewModel(
                 position = lastPosition + 1
             ))
             if(result > 0) { navigation.goBack() }
-        }
+        } }
     }
     fun onCancel(navigation: CreateExerciseNavigation) {
         viewModelScope.launch {

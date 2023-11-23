@@ -1,9 +1,11 @@
 package com.technosudo.gymfollower.ui.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -20,15 +22,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import com.technosudo.gymfollower.R
 import com.technosudo.gymfollower.data.MenuOption
-import com.technosudo.gymfollower.ui.theme.Dimensions
 
 @Composable
 fun TopBar(
     modifier: Modifier = Modifier,
-    menuOption: List<MenuOption> = emptyList(),
+    menuItems: List<MenuOption> = emptyList(),
     text: String? = null,
+    padding: Dp = 10.dp,
     onReturn: () -> Unit,
 ) {
     var expanded by remember { mutableStateOf(false) }
@@ -36,11 +41,18 @@ fun TopBar(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .height(Dimensions.topBarHeight)
+            .zIndex(2f)
+            .background(MaterialTheme.colorScheme.primary)
+            .padding(horizontal = padding)
+            .height(45.dp)
     ) {
-        IconButton(onClick = onReturn) {
+        IconButton(
+            modifier = Modifier.align(Alignment.CenterStart),
+            onClick = onReturn
+        ) {
             Image(
-                modifier = Modifier.align(Alignment.CenterStart),
+                modifier = Modifier.align(Alignment.Center),
+                alignment = Alignment.Center,
                 painter = painterResource(id = R.drawable.ic_back),
                 contentDescription = "Return",
                 colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.onBackground)
@@ -56,16 +68,20 @@ fun TopBar(
         }
 
         // Dropdown menu
-        if (menuOption.isNotEmpty()) {
+        if (menuItems.isNotEmpty()) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .align(Alignment.CenterEnd)
                     .wrapContentSize(Alignment.TopEnd)
             ) {
-                IconButton(onClick = { expanded = !expanded }) {
+                IconButton(
+                    modifier = Modifier.align(Alignment.CenterEnd),
+                    onClick = { expanded = !expanded }
+                ) {
                     Image(
-                        modifier = Modifier.align(Alignment.CenterEnd),
+                        modifier = Modifier.align(Alignment.Center),
+                        alignment = Alignment.Center,
                         painter = painterResource(id = R.drawable.ic_menu),
                         contentDescription = "Return",
                         colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.onBackground)
@@ -76,7 +92,7 @@ fun TopBar(
                     expanded = expanded,
                     onDismissRequest = { expanded = false }
                 ) {
-                    menuOption.forEach {
+                    menuItems.forEach {
                         DropdownMenuItem(
                             text = {
                                 Text(
