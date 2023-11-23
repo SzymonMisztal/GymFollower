@@ -24,6 +24,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.technosudo.gymfollower.R
 import com.technosudo.gymfollower.data.ChipData
+import com.technosudo.gymfollower.data.Period
 import com.technosudo.gymfollower.data.ProgressData
 import com.technosudo.gymfollower.data.StatData
 import com.technosudo.gymfollower.ui.components.ButtonCommon
@@ -61,7 +62,10 @@ private fun IndividualProgressScreenContent(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         item {
-            GraphComponent(uiState.progressData)
+            GraphComponent(
+                uiState.progressData,
+                uiState.periodType
+            )
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -125,7 +129,10 @@ private fun Chip(data: ChipData) {
 }
 
 @Composable
-private fun GraphComponent(data: List<ProgressData>) {
+private fun GraphComponent(
+    data: List<ProgressData>,
+    periodType: Period
+) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -136,6 +143,7 @@ private fun GraphComponent(data: List<ProgressData>) {
                 .fillMaxWidth()
                 .height(300.dp),
             data = data,
+            periodType = periodType,
             labels = true,
         )
     }

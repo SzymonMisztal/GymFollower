@@ -1,4 +1,4 @@
-package com.technosudo.gymfollower.data.dao
+package com.technosudo.gymfollower.domain.dao
 
 import androidx.room.Dao
 import androidx.room.Delete
@@ -35,4 +35,7 @@ interface ExerciseDao {
 
     @Query("SELECT MAX(position) FROM exercise")
     fun getCurrentLastPosition(): Flow<Int>
+
+    @Query("DELETE FROM exercise")
+    suspend fun clear()
 }

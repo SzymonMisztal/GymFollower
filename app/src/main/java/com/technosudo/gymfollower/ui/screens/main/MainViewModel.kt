@@ -7,18 +7,25 @@ import com.technosudo.gymfollower.data.ExerciseData
 import com.technosudo.gymfollower.data.ExerciseData.Companion.toData
 import com.technosudo.gymfollower.data.MenuOption
 import com.technosudo.gymfollower.domain.repository.ExerciseRepository
+import com.technosudo.gymfollower.domain.repository.ProgressRepository
 import com.technosudo.gymfollower.ui.theme.GreenDark
 import com.technosudo.gymfollower.ui.theme.GreenLight
 import com.technosudo.gymfollower.ui.theme.GrizzlyWhite
 import com.technosudo.gymfollower.ui.theme.RedLight
 import com.technosudo.gymfollower.ui.theme.RedNormal
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
+@OptIn(DelicateCoroutinesApi::class)
 class MainViewModel(
-    private val exerciseRepository: ExerciseRepository
+    private val exerciseRepository: ExerciseRepository,
+    private val progressRepository: ProgressRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(MainUiState.default())
@@ -31,6 +38,9 @@ class MainViewModel(
                     setEditMode()
                 }
             ))
+        }
+        GlobalScope.launch {
+            progressRepository.fillMissingProgress()
         }
         viewModelScope.launch {
             exerciseRepository.getAll().collect{
@@ -101,7 +111,7 @@ class MainViewModel(
     }
     fun increaseWeight() {
         _uiState.value.selectedExercise?.let {
-            val weight = _uiState.value.exercises[it.first]?.weight ?: 0
+            val weight = _uiState.value.exercises[it.first]?.weight ?: 0.0
             val weightNew = it.second.weight + _uiState.value.weightIncrease
             val color = when {
                 weightNew > weight * 1.1 -> GreenDark
@@ -124,7 +134,7 @@ class MainViewModel(
     }
     fun decreaseWeight() {
         _uiState.value.selectedExercise?.let {
-            val weight = _uiState.value.exercises[it.first]?.weight ?: 0
+            val weight = _uiState.value.exercises[it.first]?.weight ?: 0.0
             val weightNew = it.second.weight - _uiState.value.weightIncrease
             val color = when {
                 weightNew > weight * 1.1 -> GreenDark

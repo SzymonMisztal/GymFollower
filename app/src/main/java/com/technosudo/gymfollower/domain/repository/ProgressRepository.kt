@@ -20,11 +20,15 @@ interface ProgressRepository {
 
     fun deleteProgress(progress: ProgressEntity): Int
 
-    fun getAllProgressForExercise(id: Int): Flow<List<ProgressEntity>>
+    suspend fun clearProgress()
+
+    fun getAllProgressForExercise(exerciseId: Int): Flow<List<ProgressEntity>>
     fun getAllProgressForExerciseWithinTime(
-        id: Int,
+        exerciseId: Int,
         period: Int,
         periodType: Period,
         offset: Int = 0
     ): Flow<List<ProgressEntity>>
+
+    suspend fun fillMissingProgress()
 }

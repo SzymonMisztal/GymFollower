@@ -1,5 +1,6 @@
 package com.technosudo.gymfollower.ui.screens.settings
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -12,8 +13,13 @@ fun SettingsScreen() {
     val viewModel = koinViewModel<SettingsViewModel>()
     val uiState by viewModel.uiState.collectAsState()
 
-    ButtonCommon(text = "Populate DB") {
-        viewModel.populateDatabase()
+    Column {
+        ButtonCommon(text = "Populate DB") {
+            viewModel.populateDatabase()
+        }
+        ButtonCommon(text = "Clear DB") {
+            viewModel.clearDatabase()
+        }
     }
 
     SettingsScreenContent()

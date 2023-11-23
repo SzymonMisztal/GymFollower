@@ -10,7 +10,7 @@ data class ExerciseEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 1,
     val name: String,
-    val weight: Int,
+    val weight: Double,
     @DrawableRes val icon: Int = R.drawable.ic_exercise,
     val position: Int
 )

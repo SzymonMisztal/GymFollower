@@ -5,7 +5,7 @@ import java.time.LocalDate
 
 data class ProgressData(
     val date: LocalDate,
-    val weight: Int
+    val weight: Double
 ) {
     companion object {
         fun ProgressEntity.toData(): ProgressData {

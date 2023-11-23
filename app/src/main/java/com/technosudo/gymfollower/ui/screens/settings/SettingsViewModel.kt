@@ -32,21 +32,21 @@ class SettingsViewModel(
                 ExerciseEntity(
                     id = 1,
                     name = "Exercise 2",
-                    weight = 100,
+                    weight = 100.0,
                     icon = R.drawable.ic_exercise,
                     position = 1
                 ),
                 ExerciseEntity(
                     id = 2,
                     name = "Exercise 3",
-                    weight = 130,
+                    weight = 130.0,
                     icon = R.drawable.ic_exercise,
                     position = 2
                 ),
                 ExerciseEntity(
                     id = 3,
                     name = "Exercise 4",
-                    weight = 70,
+                    weight = 70.0,
                     icon = R.drawable.ic_exercise,
                     position = 3
                 )
@@ -55,41 +55,46 @@ class SettingsViewModel(
             val result2 = progressRepository.upsertProgress(listOf(
                 ProgressEntity(
                     exerciseId = 2,
-                    weight = 100,
-                    dateEpochDay = LocalDate.of(2023, 10, 23).toEpochDay()
+                    weight = 100.0,
+                    dateEpochDay = LocalDate.of(2023, 9, 23).toEpochDay()
                 ),
                 ProgressEntity(
                     exerciseId = 2,
-                    weight = 105,
-                    dateEpochDay = LocalDate.of(2023, 10, 24).toEpochDay()
+                    weight = 105.0,
+                    dateEpochDay = LocalDate.of(2023, 9, 25).toEpochDay()
                 ),
                 ProgressEntity(
                     exerciseId = 2,
-                    weight = 100,
-                    dateEpochDay = LocalDate.of(2023, 10, 25).toEpochDay()
+                    weight = 100.0,
+                    dateEpochDay = LocalDate.of(2023, 9, 30).toEpochDay()
                 ),
                 ProgressEntity(
                     exerciseId = 2,
-                    weight = 110,
-                    dateEpochDay = LocalDate.of(2023, 10, 26).toEpochDay()
+                    weight = 110.0,
+                    dateEpochDay = LocalDate.of(2023, 10, 4).toEpochDay()
                 ),
                 ProgressEntity(
                     exerciseId = 2,
-                    weight = 100,
-                    dateEpochDay = LocalDate.of(2023, 10, 27).toEpochDay()
+                    weight = 100.0,
+                    dateEpochDay = LocalDate.of(2023, 10, 6).toEpochDay()
                 ),
                 ProgressEntity(
                     exerciseId = 2,
-                    weight = 115,
-                    dateEpochDay = LocalDate.of(2023, 10, 28).toEpochDay()
+                    weight = 115.0,
+                    dateEpochDay = LocalDate.of(2023, 10, 10).toEpochDay()
                 ),
                 ProgressEntity(
                     exerciseId = 2,
-                    weight = 120,
-                    dateEpochDay = LocalDate.of(2023, 10, 29).toEpochDay()
+                    weight = 120.0,
+                    dateEpochDay = LocalDate.of(2023, 11, 1).toEpochDay()
                 )
             ))
             Log.d("MORON", result2.toString())
         } }
+    }
+    fun clearDatabase() {
+        viewModelScope.launch {
+            exerciseRepository.clearExercises()
+        }
     }
 }

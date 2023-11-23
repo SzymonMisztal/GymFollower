@@ -1,7 +1,7 @@
 package com.technosudo.gymfollower.domain.repository
 
 import android.util.Log
-import com.technosudo.gymfollower.data.dao.ExerciseDao
+import com.technosudo.gymfollower.domain.dao.ExerciseDao
 import com.technosudo.gymfollower.domain.entity.ExerciseEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -36,6 +36,10 @@ class ExerciseRepositoryImpl(
 
     override fun deleteExercise(exercise: ExerciseEntity): Int {
         return exerciseDao.deleteExercise(exercise)
+    }
+
+    override suspend fun clearExercises() {
+        exerciseDao.clear()
     }
 
     override fun getAll(): Flow<List<ExerciseEntity>> = exerciseDao

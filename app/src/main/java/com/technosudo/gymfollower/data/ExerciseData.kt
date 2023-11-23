@@ -10,7 +10,7 @@ import com.technosudo.gymfollower.ui.theme.GrizzlyWhite
 data class ExerciseData(
     val id: Int,
     val name: String,
-    val weight: Int,
+    val weight: Double,
     @DrawableRes val icon: Int = R.drawable.ic_exercise,
     val position: Int,
     val numberColor: Color? = null

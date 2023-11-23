@@ -6,14 +6,16 @@ import androidx.lifecycle.viewModelScope
 import com.technosudo.gymfollower.R
 import com.technosudo.gymfollower.data.ChipData
 import com.technosudo.gymfollower.data.Period
+import com.technosudo.gymfollower.data.ProgressData
 import com.technosudo.gymfollower.data.ProgressData.Companion.toData
 import com.technosudo.gymfollower.data.StatData
 import com.technosudo.gymfollower.domain.repository.ProgressRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 
 class IndividualProgressViewModel(
     private val progressRepository: ProgressRepository
@@ -21,6 +23,10 @@ class IndividualProgressViewModel(
 
     private val _uiState = MutableStateFlow(IndividualProgressUiState.default())
     val uiState = _uiState.asStateFlow()
+
+    private var exerciseId: Int = 0
+    private var offset: Int = 0
+    private val period: Int = 10
 
     init {
         _uiState.update {
@@ -32,34 +38,74 @@ class IndividualProgressViewModel(
         onChipSelected(Period.Weeks)
     }
 
-    fun init(id: Int) {
-        viewModelScope.launch {
-            val result = progressRepository.getAllProgressForExerciseWithinTime(
-                id = id,
-                period = 10,
-                periodType = Period.Weeks
-            )
-            result.collect { data ->
-                _uiState.update {
-                    it.copy(progressData = data.map { entity -> entity.toData() })
-                }
-            }
-        }
+    fun init(exerciseId: Int) {
+        this.exerciseId = exerciseId
+        getData(_uiState.value.periodType)
     }
 
-    fun onChipSelected(period: Period) {
-        when (period) {
-            else -> {}  // TODO: calls to db
-        }
+    private fun onChipSelected(periodType: Period) {
         val newChipList = uiState.value.chipData.map {
-            if(it.period == period)
+            if(it.period == periodType)
                 it.copy(isSelected = true)
             else if(it.isSelected)
                 it.copy(isSelected = false)
             else it
         }
         _uiState.update {
-            it.copy(chipData = newChipList)
+            it.copy(
+                chipData = newChipList,
+                periodType = periodType
+            )
+        }
+        getData(periodType)
+    }
+
+    private fun getData(periodType: Period) {
+        viewModelScope.launch {
+
+            val sortedByTime = sortedMapOf<LocalDate, MutableList<Double>>()
+            val averages: MutableList<ProgressData> = mutableListOf()
+            val prgressList = progressRepository.getAllProgressForExerciseWithinTime(
+                exerciseId = exerciseId,
+                period = period,
+                periodType = periodType,
+                offset = offset
+            ).firstOrNull()?.map { it.toData() } ?: return@launch
+
+            for(progress in prgressList) {
+                val normalizedDate = when(periodType) {
+                    Period.Weeks -> progress.date.minusDays(progress.date.dayOfWeek.value.toLong() + 1)
+                    Period.Months -> progress.date.withDayOfMonth(1)
+                    Period.Years -> progress.date.withMonth(1).withDayOfMonth(1)
+                    else -> { progress.date }
+                }
+                sortedByTime.computeIfAbsent(
+                    normalizedDate
+                ) { mutableListOf<Double>() }
+                sortedByTime[normalizedDate]?.add(progress.weight)
+            }
+
+            for(date in sortedByTime.keys) {
+                averages.add(ProgressData(
+                    date = date,
+                    weight = sortedByTime[date]?.max() ?: -10.0
+                ))
+            }
+
+            _uiState.update {
+                it.copy(progressData = averages)
+            }
+        }
+    }
+
+    fun increaseOffset() {
+        offset += 1
+        getData(_uiState.value.periodType)
+    }
+    fun decreaseOffset() {
+        if(offset > 0) {
+            offset -= 1
+            getData(_uiState.value.periodType)
         }
     }
 

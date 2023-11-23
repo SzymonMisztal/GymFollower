@@ -2,12 +2,14 @@ package com.technosudo.gymfollower.domain.repository
 
 import android.util.Log
 import com.technosudo.gymfollower.data.Period
-import com.technosudo.gymfollower.data.dao.ProgressDao
+import com.technosudo.gymfollower.domain.dao.ProgressDao
 import com.technosudo.gymfollower.domain.entity.ProgressEntity
 import com.technosudo.gymfollower.helpers.EpochConverter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import java.time.LocalDate
@@ -41,13 +43,17 @@ class ProgressRepositoryImpl(
         return progressDao.deleteProgress(progress)
     }
 
-    override fun getAllProgressForExercise(id: Int): Flow<List<ProgressEntity>> =
-        progressDao.getAllProgressForExercise(id)
+    override suspend fun clearProgress() {
+        progressDao.clear()
+    }
+
+    override fun getAllProgressForExercise(exerciseId: Int): Flow<List<ProgressEntity>> =
+        progressDao.getAllProgressForExercise(exerciseId)
             .flowOn(Dispatchers.IO)
             .catch { Log.d(TAG, it.message ?: "") }
 
     override fun getAllProgressForExerciseWithinTime(
-        id: Int,
+        exerciseId: Int,
         period: Int,
         periodType: Period,
         offset: Int
@@ -58,10 +64,28 @@ class ProgressRepositoryImpl(
             offset = offset
         )
         return progressDao.getAllProgressForExerciseWithinTime(
-            id = id,
+            exerciseId = exerciseId,
             startTime = periodEpoch.first,
             endTime = periodEpoch.second
         ).flowOn(Dispatchers.IO)
             .catch { Log.d(TAG, it.message ?: "") }
+    }
+
+    override suspend fun fillMissingProgress() {
+        val maxDates = progressDao.getExerciseMaxDate().firstOrNull() ?: return
+        for(lastProcess in maxDates) {
+            val now = LocalDate.now().toEpochDay()
+            val processToAdd = mutableListOf<ProgressEntity>()
+            (lastProcess.dateEpochDay + 1..now).forEach {
+                processToAdd.add(
+                    ProgressEntity(
+                        exerciseId = lastProcess.exerciseId,
+                        dateEpochDay = it,
+                        weight = lastProcess.weight
+                    )
+                )
+            }
+            progressDao.upsertProgress(processToAdd)
+        }
     }
 }

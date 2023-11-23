@@ -1,4 +1,4 @@
-package com.technosudo.gymfollower.data.dao
+package com.technosudo.gymfollower.domain.dao
 
 import androidx.room.Dao
 import androidx.room.Delete
@@ -27,15 +27,23 @@ interface ProgressDao {
     @Delete
     fun deleteProgress(progress: ProgressEntity): Int
 
-    @Query("SELECT * FROM progress WHERE exerciseId = :id")
-    fun getAllProgressForExercise(id: Int): Flow<List<ProgressEntity>>
+    @Query("SELECT * FROM progress WHERE exerciseId = :exerciseId")
+    fun getAllProgressForExercise(exerciseId: Int): Flow<List<ProgressEntity>>
 
     @Query("SELECT * FROM progress " +
-            "WHERE exerciseId = :id " +
+            "WHERE exerciseId = :exerciseId " +
             "AND dateEpochDay BETWEEN :startTime AND :endTime")
     fun getAllProgressForExerciseWithinTime(
-        id: Int,
+        exerciseId: Int,
         startTime: Long,
         endTime: Long
     ): Flow<List<ProgressEntity>>
+
+    @Query("SELECT exerciseId, MAX(dateEpochDay) AS dateEpochDay, weight " +
+            "FROM progress " +
+            "GROUP BY exerciseId")
+    fun getExerciseMaxDate(): Flow<List<ProgressEntity>>
+
+    @Query("DELETE FROM progress")
+    suspend fun clear()
 }

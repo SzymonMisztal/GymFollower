@@ -88,7 +88,8 @@ private fun MainScreenContent(
 
             LazyColumn(
                 modifier = Modifier
-                    .padding(Dimensions.space10)
+                    .padding(Dimensions.space10),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
                 if (uiState.editMode) {
@@ -109,7 +110,7 @@ private fun MainScreenContent(
                         Dimensions.space10.HeightSpacer()
                     }
                 }
-                item{
+                item {
                     IconButton(
                         modifier = Modifier
                             .clip(shape = RoundedCornerShape(50))
@@ -234,7 +235,7 @@ private fun ExerciseCard(
                 )
             }
             VerticalDivider()
-            NumberBox(num = exerciseData.weight)
+            NumberBox(num = exerciseData.weight.toInt())
         }
     }
 }
@@ -325,7 +326,7 @@ private fun ExerciseCardEdit(
             }
             VerticalDivider()
             NumberBox(
-                num = exerciseData.second.weight,
+                num = exerciseData.second.weight.toInt(),
                 color = exerciseData.second.numberColor
             )
         }

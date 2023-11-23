@@ -39,7 +39,7 @@ class ProgressViewModel(
 
             for(exercise in exercises) {
                 val progressList = progressRepository.getAllProgressForExerciseWithinTime(
-                    id = exercise.id,
+                    exerciseId = exercise.id,
                     period = 10,
                     periodType = Period.Weeks
                 ).first().map { it.toData() }

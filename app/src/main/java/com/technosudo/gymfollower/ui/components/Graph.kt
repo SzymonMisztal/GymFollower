@@ -14,14 +14,20 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.technosudo.gymfollower.data.Period
 import com.technosudo.gymfollower.data.ProgressData
+import com.technosudo.gymfollower.ui.theme.RedNormal
+import java.time.temporal.WeekFields
+import java.util.Locale
 import kotlin.math.round
 
 @Composable
 fun Graph(
     modifier: Modifier = Modifier,
     data: List<ProgressData> = emptyList(),
+    periodType: Period = Period.Weeks,
     labels: Boolean = true,
+    dashedLines: Boolean = true,
     graphColor: Color = Color.Green,
     backgroundColor: Color? = null
 ) {
@@ -55,7 +61,7 @@ fun Graph(
         modifier = modifier
             .fillMaxWidth()
     ) {
-        val spacePerHour = (size.width - spacing) / (data.size - 1)
+        val spacePerHour = (size.width - spacing) / (data.size + if(data.size == 1) 1 else 0 - 1)
         val priceStep = (upperValue - lowerValue) / 5
 
         if(backgroundColor != null) {
@@ -69,11 +75,16 @@ fun Graph(
         if(labels) {
             data.indices.forEach { i ->
                 val record = data[i]
-                val x = record.date.dayOfWeek.value
+                val x = when(periodType) {
+                    Period.Days -> record.date.dayOfWeek
+                    Period.Weeks -> record.date.get(WeekFields.of(Locale.getDefault()).weekOfWeekBasedYear())
+                    Period.Months -> record.date.month
+                    Period.Years -> record.date.year
+                }
                 drawContext.canvas.nativeCanvas.apply {
                     drawText(
                         x.toString(),
-                        spacing + i * spacePerHour,
+                        if(data.size == 1) (size.width + spacing) / 2 else spacing + i * spacePerHour,
                         size.height - 5,
                         textPaint
                     )
@@ -101,7 +112,7 @@ fun Graph(
             for(i in data.indices) {
 
                 val record = data[i]
-                val ratio = (record.weight - lowerValue).toFloat() / (upperValue - lowerValue)
+                val ratio = (record.weight - lowerValue).toFloat() / (upperValue - lowerValue).toFloat()
 
                 val x = spacing + i * spacePerHour
                 val y = height - spacing - (ratio * height)
@@ -120,6 +131,10 @@ fun Graph(
                 }
                 lastX = x
                 lastY = y
+                if(data.size == 1) {
+                    relativeLineTo(size.width - spacing, 0f)
+                    lastX = size.width
+                }
             }
         }
         val fillPath = android.graphics.Path(strokePath.asAndroidPath())
@@ -147,5 +162,27 @@ fun Graph(
                 cap = StrokeCap.Round
             )
         )
+
+        if(dashedLines) {
+            val dashedLine = PathEffect.dashPathEffect(floatArrayOf(10f, 10f), 0f)
+            val ratio = (data.last().weight - lowerValue).toFloat() / (upperValue - lowerValue).toFloat()
+            drawLine(
+                color = RedNormal,
+                start = Offset(spacing, size.height - spacing - (ratio * size.height)),
+                end = Offset(size.width, size.height - spacing - (ratio * size.height)),
+                pathEffect = dashedLine
+            )
+        }
+
+//        val pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 10f), 0f)
+//        Canvas(Modifier.fillMaxWidth().height(1.dp)) {
+//
+//            drawLine(
+//                color = Color.Red,
+//                start = Offset(0f, 0f),
+//                end = Offset(size.width, 0f),
+//                pathEffect = pathEffect
+//            )
+//        }
     }
 }

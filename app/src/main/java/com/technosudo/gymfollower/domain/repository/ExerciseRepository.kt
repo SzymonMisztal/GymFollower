@@ -14,6 +14,8 @@ interface ExerciseRepository {
 
     fun deleteExercise(exercise: ExerciseEntity): Int
 
+    suspend fun clearExercises()
+
     fun getAll(): Flow<List<ExerciseEntity>>
 
     fun getById(id: Int): Flow<ExerciseEntity>

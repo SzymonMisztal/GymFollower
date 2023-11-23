@@ -42,7 +42,7 @@ class CreateExerciseViewModel(
                 ?: -1
             val result = exerciseRepository.insertExercise(ExerciseEntity(
                 name = uiState.value.inputData.text,
-                weight = uiState.value.weight.toInt(),
+                weight = uiState.value.weight,
                 icon = uiState.value.icon,
                 position = lastPosition + 1
             ))

@@ -18,5 +18,5 @@ import androidx.room.ForeignKey.Companion.CASCADE
 data class ProgressEntity(
     val exerciseId: Int,
     val dateEpochDay: Long,
-    val weight: Int
+    val weight: Double
 )
