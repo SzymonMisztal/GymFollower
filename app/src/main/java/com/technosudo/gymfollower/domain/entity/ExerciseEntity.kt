@@ -8,7 +8,7 @@ import com.technosudo.gymfollower.R
 @Entity(tableName = "exercise")
 data class ExerciseEntity(
     @PrimaryKey(autoGenerate = true)
-    val id: Int = 1,
+    val id: Int = 0,
     val name: String,
     val weight: Double,
     @DrawableRes val icon: Int = R.drawable.ic_exercise,

@@ -286,6 +286,22 @@ private fun ExerciseCardEdit(
                 )
             }
             VerticalDivider()
+            IconButton(
+                modifier = Modifier
+                    .width(Dimensions.exerciseCardHeight / 2),
+                onClick = {
+                    uiInteraction.deleteExercise(exerciseData.second)
+                }
+            ) {
+                Image(
+                    painter = painterResource(
+                        id = R.drawable.ic_cancel
+                    ),
+                    contentDescription = stringResource(id = R.string.image_content_description),
+                    colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.onBackground)
+                )
+            }
+            VerticalDivider()
             Column(
                 modifier = Modifier
                     .width(Dimensions.exerciseCardHeight / 2)

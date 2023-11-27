@@ -25,5 +25,14 @@ data class ExerciseData(
                 position = position
             )
         }
+        fun ExerciseData.toEntity(): ExerciseEntity {
+            return ExerciseEntity(
+                id = id,
+                name = name,
+                weight = weight,
+                icon = icon,
+                position = position
+            )
+        }
     }
 }

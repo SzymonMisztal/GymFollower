@@ -14,7 +14,7 @@ import com.technosudo.gymfollower.domain.entity.ProgressEntity
         ExerciseEntity::class,
         ProgressEntity::class
     ],
-    version = 3
+    version = 5
 )
 abstract class AppDatabase : RoomDatabase() {
     abstract fun exerciseDao(): ExerciseDao

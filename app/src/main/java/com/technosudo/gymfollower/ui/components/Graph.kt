@@ -76,7 +76,7 @@ fun Graph(
             data.indices.forEach { i ->
                 val record = data[i]
                 val x = when(periodType) {
-                    Period.Days -> record.date.dayOfWeek
+                    Period.Days -> record.date.dayOfWeek.toString().substring(0, 3)
                     Period.Weeks -> record.date.get(WeekFields.of(Locale.getDefault()).weekOfWeekBasedYear())
                     Period.Months -> record.date.month
                     Period.Years -> record.date.year

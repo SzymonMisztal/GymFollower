@@ -11,7 +11,7 @@ data class CreateExerciseUiState(
     companion object {
         fun default(
             weight: Double = 0.0,
-            icon: Int = 0,
+            icon: Int = R.drawable.ic_exercise,
             inputData: InputFieldData = InputFieldData(
                 label = R.string.create_exercise_input_name
             )

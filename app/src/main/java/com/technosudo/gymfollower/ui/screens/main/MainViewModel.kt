@@ -5,7 +5,9 @@ import androidx.lifecycle.viewModelScope
 import com.technosudo.gymfollower.R
 import com.technosudo.gymfollower.data.ExerciseData
 import com.technosudo.gymfollower.data.ExerciseData.Companion.toData
+import com.technosudo.gymfollower.data.ExerciseData.Companion.toEntity
 import com.technosudo.gymfollower.data.MenuOption
+import com.technosudo.gymfollower.domain.entity.ProgressEntity
 import com.technosudo.gymfollower.domain.repository.ExerciseRepository
 import com.technosudo.gymfollower.domain.repository.ProgressRepository
 import com.technosudo.gymfollower.ui.theme.GreenDark
@@ -16,11 +18,13 @@ import com.technosudo.gymfollower.ui.theme.RedNormal
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.time.LocalDate
 
 @OptIn(DelicateCoroutinesApi::class)
 class MainViewModel(
@@ -48,7 +52,12 @@ class MainViewModel(
                 for(element in it)
                     map[element.position] = element.toData()
                 _uiState.update {
-                    it.copy(exercises = map)
+                    it.copy(
+                        exercises = map,
+                        exercisesEdit = it.exercisesEdit.filterValues {
+                            map.values.map { it.id }.contains(it.id)
+                        }.toSortedMap()
+                    )
                 }
             }
         }
@@ -70,11 +79,27 @@ class MainViewModel(
         }
     }
     fun updateExercises() {
-        _uiState.update {
-            it.copy(
-                editMode = false,
-                exercises = it.exercisesEdit
-            )
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                exerciseRepository.upsertExercises(
+                    uiState.value.exercisesEdit.values.map { it.toEntity() }
+                )
+                progressRepository.upsertProgress(
+                    uiState.value.exercisesEdit.values.map { ProgressEntity(
+                        exerciseId = it.id,
+                        dateEpochDay = LocalDate.now().toEpochDay(),
+                        weight = it.weight
+                    ) }
+                )
+            }
+            setNormalMode()
+        }
+    }
+    fun deleteExercise(exerciseData: ExerciseData) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                exerciseRepository.deleteExercise(exerciseData.toEntity())
+            }
         }
     }
     fun setNameDialogVisible() {

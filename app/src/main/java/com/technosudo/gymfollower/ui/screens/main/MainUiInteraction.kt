@@ -7,6 +7,7 @@ interface MainUiInteraction {
     fun setNormalMode()
     fun setEditMode()
     fun updateExercises()
+    fun deleteExercise(exerciseData: ExerciseData)
     fun setNameDialogVisible()
     fun setNameDialogInvisible()
     fun onTextChange(text: String)
@@ -26,6 +27,10 @@ interface MainUiInteraction {
 
             override fun updateExercises() {
                 viewModel.updateExercises()
+            }
+
+            override fun deleteExercise(exerciseData: ExerciseData) {
+                viewModel.deleteExercise(exerciseData)
             }
 
             override fun setNameDialogVisible() {
